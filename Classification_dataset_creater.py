@@ -7,6 +7,7 @@ ensembl_id_column = sfari["ensembl-id"].to_list() #get ensembl id column
 
 xls = pd.read_excel("Negative_Positive_genes.xlsx", sheet_name=1)
 NCBI_id_column = xls["gene id"].to_list() #get NCBI id column
+NCBI_id=[str(id) for x in NCBI_id_column]
 
 final_list=[]
 
@@ -18,7 +19,7 @@ with open("emb_file.csv", "r") as f:
         if len(row) == 6:
             if row[1] in ensembl_id_column:
                 final_list.append(row)
-            elif row[3] in NCBI_id_column:
+            elif row[3] in NCBI_id:
                 final_list.append(row)
 
 #write final list to csv file
