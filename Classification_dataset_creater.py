@@ -19,7 +19,7 @@ with open("emb_file.csv", "r") as f:
         if len(row) == 6:
             if row[1] in ensembl_id_column:
                 final_list.append(row)
-            elif row[3] in NCBI_id:
+            elif str(row[3]) in NCBI_id:
                 final_list.append(row)
 
 #write final list to csv file
