@@ -2,11 +2,7 @@ import csv
 import pandas as pd
 import numpy as np
 
-sfari= pd.read_csv("sfari_ed.csv") #open sfari file
-ensembl_id_column = sfari["ensembl-id"].to_list() #get ensembl id column
-
-xls = pd.read_excel("Negative_Positive_genes.xlsx", sheet_name=1)
-NCBI_id = xls["gene id"].astype(str).to_list() #get NCBI id column
+gene_list = pd.read_csv("gene_list.csv", index_col=0)
 
 final_list=[]
 
@@ -16,17 +12,11 @@ with open("emb_file.csv", "r") as f:
 
     for row in csv_reader:
         if len(row) == 6:
-            if row[1] in ensembl_id_column:
+            if row[1] in gene_list.index:
  
-               row =  row + [1]
+               row = row + [gene_list.loc[row[1]]]
                final_list.append(row)
-
-            elif row[3] in NCBI_id :
-                row = row + [0]
-                final_list.append(row)
-
-            elif str(row[3]) in NCBI_id:
-                final_list.append(row)
+print(final_list)
 
 #write final list to csv file
 
