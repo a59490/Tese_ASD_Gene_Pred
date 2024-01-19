@@ -14,13 +14,10 @@ with open("emb_file.csv", "r") as f:
         if len(row) == 6:
             if row[1] in gene_list.index:
  
-               row = row + [gene_list.loc[row[1]]]
+               row = row + [gene_list.loc[row[1],"y"]]
                final_list.append(row)
-print(final_list)
 
 #write final list to csv file
-
-
 with open("final_dataset.csv", "w", newline="") as output_file:
     csv_writer = csv.writer(output_file)
     csv_writer.writerows(final_list) 
