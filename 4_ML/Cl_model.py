@@ -5,11 +5,11 @@ import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_validate
 
-X=pd.read_csv('Classification_file.csv')
+X=pd.read_csv('final_dataset.csv')
 # drop the last column
 X=X[X.columns[-2]]
 
-Y=pd.read_csv('Classification_file.csv')
+Y=pd.read_csv('final_dataset.csv')
 # keep only the last column
 Y = Y[Y.columns[-1]]
 
@@ -24,7 +24,7 @@ specificity_scorer = make_scorer(recall_score, pos_label=0)
 
 
 scoring = {'AUC': 'roc_auc', 'Accuracy': "accuracy", "f1": "f1",
-                     "Recall": "recall", "Precision": "precision", "Average Precision": "average_precision","MCC":"mcc",
+                     "Recall": "recall", "Precision": "precision", "Average Precision": "average_precision",
                     "Sensitivity": sensitivity_scorer, "Specificity": specificity_scorer}
 
 print(cross_validate(lr, X, Y, scoring=scoring))
