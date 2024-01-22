@@ -23,6 +23,7 @@ with open("transcript_seq.csv", "r") as f:
                 embedding = embedding_mean.detach().numpy()
 
                 embedding_str = " ".join(map(str, embedding))
+                row=row[:3]
                 row.append(embedding_str)
 
                 # Open the output file for writing, write the modified row, and close the file
