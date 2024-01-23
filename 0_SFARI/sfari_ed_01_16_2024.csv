@@ -679,7 +679,7 @@ status,gene-symbol,gene-name,ensembl-id,chromosome,genetic-category,gene-score,s
 9,NRXN2,neurexin 2,ENSG00000110076,11,"Rare Single Gene Mutation, Syndromic, Genetic Association, Functional",1.0,0,7.0,17
 9,NRXN3,neurexin 3,ENSG00000021645,14,"Rare Single Gene Mutation, Genetic Association, Functional",1.0,0,11.1,27
 9,NSD1,nuclear receptor binding SET domain protein 1,ENSG00000165671,5,"Rare Single Gene Mutation, Syndromic, Functional",1.0,1,22.9,33
-9,MSNP1AS,"Moesinpseudogene 1, antisense",ENSG00000233067,5,"Genetic Association, Functional",2.0,0,,13
+9,MSNP1AS,"Moesinpseudogene 1, antisense",ENSG00000251593,5,"Genetic Association, Functional",2.0,0,,13
 9,NSD2,nuclear receptor binding SET domain protein 2,ENSG00000109685,4,"Rare Single Gene Mutation, Syndromic",2.0,1,,12
 9,NSMCE3,"NSE3 homolog, SMC5-SMC6 complex component",ENSG00000185115,15,"Rare Single Gene Mutation, Functional",2.0,0,,5
 9,NTNG1,netrin G1,ENSG00000162631,1,"Rare Single Gene Mutation, Syndromic, Genetic Association",2.0,1,,8
@@ -812,7 +812,7 @@ status,gene-symbol,gene-name,ensembl-id,chromosome,genetic-category,gene-score,s
 9,PRPF8,pre-mRNA processing factor 8,ENSG00000174231,17,"Rare Single Gene Mutation, Syndromic",3.0,1,,9
 9,PRR12,proline rich 12,ENSG00000126464,19,"Rare Single Gene Mutation, Syndromic",1.0,1,,7
 9,PRR14L,proline rich 14 like,ENSG00000183530,22,Rare Single Gene Mutation,1.0,0,,5
-9,PRR25,ENSG00000167945,,16,Rare Single Gene Mutation,3.0,0,,2
+9,PRR25,proline rich 25,ENSG00000167945,16,Rare Single Gene Mutation,3.0,0,,2
 9,PRUNE2,prune homolog 2,ENSG00000106772,9,"Rare Single Gene Mutation, Syndromic",2.0,0,,12
 9,PSD3,pleckstrin and Sec7 domain containing 3,ENSG00000156011,8,"Rare Single Gene Mutation, Genetic Association",2.0,0,,7
 9,PSMD11,"proteasome 26S subunit, non-ATPase 11",ENSG00000108671,17,Rare Single Gene Mutation,1.0,0,,2
@@ -820,7 +820,7 @@ status,gene-symbol,gene-name,ensembl-id,chromosome,genetic-category,gene-score,s
 9,PSMD6,"proteasome 26S subunit, non-ATPase 6",ENSG00000163636,3,Rare Single Gene Mutation,1.0,0,,3
 9,PTBP2,polypyrimidine tract binding protein 2,ENSG00000117569,1,"Rare Single Gene Mutation, Genetic Association, Functional",2.0,0,,8
 9,PTCHD1,patched domain containing 1,ENSG00000165186,X,"Rare Single Gene Mutation, Genetic Association, Functional",1.0,0,0.0,18
-9,PTCHD1-AS,PTCHD1antisense RNA (head to head),ENSG00000165186,X,Rare Single Gene Mutation,2.0,0,17.6,3
+9,PTCHD1-AS,PTCHD1antisense RNA (head to head),ENSG00000233067,X,Rare Single Gene Mutation,2.0,0,17.6,3
 9,PTDSS1,phosphatidylserine synthase 1,ENSG00000156471,8,"Rare Single Gene Mutation, Syndromic",3.0,0,,6
 9,PTEN,phosphatase and tensin homolog (mutated in multiple advanced cancers 1),ENSG00000171862,10,"Rare Single Gene Mutation, Syndromic, Functional",1.0,1,63.15,97
 9,PTGS2,prostaglandin-endoperoxide synthase 2,ENSG00000073756,1,"Rare Single Gene Mutation, Genetic Association, Functional",2.0,0,,8
