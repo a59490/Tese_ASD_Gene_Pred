@@ -13,7 +13,7 @@
 #SBATCH --partition=BIOISI
 
 # set name of job
-#SBATCH --job-name=jobname
+#SBATCH --job-name=ASD_Pred
 
 # mail alert at start, end and abortion of execution
 #SBATCH --mail-type=NONE
