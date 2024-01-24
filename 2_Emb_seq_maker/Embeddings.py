@@ -12,7 +12,7 @@ with open("transcript_seq.csv", "r") as f:
     next(csv_reader)  # Skip the header row
 
     for row in csv_reader:
-        if row[3] != "None" and len(row[3]) <= 10000:
+        if row[3] != "None" and len(row[3]) <= 100000:
             try:
                 dna_seq = row[3]
 
