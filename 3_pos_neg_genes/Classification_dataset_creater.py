@@ -11,7 +11,7 @@ with open("emb_file.csv", "r") as f:
     next(csv_reader)
 
     for row in csv_reader:
-        if len(row) == 6:
+        if len(row) == 4:
             if row[1] in gene_list.index:
  
                row = row + [gene_list.loc[row[1],"y"]]
