@@ -12,9 +12,9 @@ with open("transcript_seq.csv", "r") as f:
     next(csv_reader)  # Skip the header row
 
     for row in csv_reader:
-        if row[3] != "None" and len(row[3]) <= 7000:
+        if row[4] != "None" and len(row[4]) <= 7000:
             try:
-                dna_seq = row[3]
+                dna_seq = row[4]
 
                 inputs = tokenizer(dna_seq, return_tensors='pt')["input_ids"]
                 hidden_states = model(inputs)[0]
