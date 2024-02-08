@@ -23,5 +23,5 @@
 
 # run the application
 echo "Now on: $PWD"
-$HOME/miniconda3/bin/conda run -n dna python /work/joaoinacio/work/Tese_ASD_Gene_Pred/2_Emb_seq_maker/Embeddings.py
+$HOME/miniconda3/bin/conda run -n dna python /work/joaoinacio/work/Tese_ASD_Gene_Pred/2_Emb_seq_maker/Embeddings_max.py
 echo "Finished"

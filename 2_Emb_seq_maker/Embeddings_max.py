@@ -19,8 +19,8 @@ with open("transcript_seq.csv", "r") as f:
                 inputs = tokenizer(dna_seq, return_tensors='pt')["input_ids"]
                 hidden_states = model(inputs)[0]
                 # Embedding with max pooling
-                embedding_mean = torch.max(hidden_states[0], dim=0)
-                embedding = embedding_mean.detach().numpy()
+                embedding_max = torch.max(hidden_states[0], dim=0)[0]
+                embedding = embedding_max.detach().numpy()
 
                 embedding_str = " ".join(map(str, embedding))
                 row=row[:3]
