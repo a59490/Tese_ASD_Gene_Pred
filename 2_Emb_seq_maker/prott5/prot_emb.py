@@ -1,3 +1,4 @@
+import csv
 from transformers import T5Tokenizer, T5EncoderModel
 import torch
 import re
@@ -36,8 +37,7 @@ for sequence in protein_sequences:
     # Append the embedding to the list
     all_embeddings.append(per_protein_embedding.tolist())
 
-# Write all the embeddings to a single file
-with open("all_protein_embeddings.txt", "w") as file:
-    for embedding in all_embeddings:
-        file.write(" ".join(map(str, embedding)))
-        file.write("\n")
+# Write all the embeddings to a single CSV file
+with open("all_protein_embeddings.csv", "w", newline='') as csvfile:
+    writer = csv.writer(csvfile)
+    writer.writerows(all_embeddings)
