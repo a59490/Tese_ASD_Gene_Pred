@@ -1,0 +1,41 @@
++ echo 'Now on: /work/joaoinacio/work/Tese_ASD_Gene_Pred/2_Emb_seq_maker'
+Now on: /work/joaoinacio/work/Tese_ASD_Gene_Pred/2_Emb_seq_maker
++ /work/joaoinacio/miniconda3/bin/conda run -n dna python /work/joaoinacio/work/Tese_ASD_Gene_Pred/2_Emb_seq_maker/Embeddings_max.py
+/work/joaoinacio/.cache/huggingface/modules/transformers_modules/zhihan1996/DNABERT-2-117M/25abaf0bd247444fcfa837109f12088114898d98/bert_layers.py:125: UserWarning: Unable to import Triton; defaulting MosaicBERT attention implementation to pytorch (this will reduce throughput when using this model).
+  warnings.warn(
+Some weights of the model checkpoint at zhihan1996/DNABERT-2-117M were not used when initializing BertModel: ['cls.predictions.decoder.weight', 'cls.predictions.transform.LayerNorm.bias', 'cls.predictions.transform.dense.weight', 'cls.predictions.decoder.bias', 'cls.predictions.transform.dense.bias', 'cls.predictions.transform.LayerNorm.weight']
+- This IS expected if you are initializing BertModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing BertModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Some weights of BertModel were not initialized from the model checkpoint at zhihan1996/DNABERT-2-117M and are newly initialized: ['bert.pooler.dense.bias', 'bert.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+/work/joaoinacio/.cache/huggingface/modules/transformers_modules/zhihan1996/DNABERT-2-117M/25abaf0bd247444fcfa837109f12088114898d98/bert_layers.py:432: UserWarning: Increasing alibi size from 512 to 613
+  warnings.warn(
+/work/joaoinacio/.cache/huggingface/modules/transformers_modules/zhihan1996/DNABERT-2-117M/25abaf0bd247444fcfa837109f12088114898d98/bert_layers.py:432: UserWarning: Increasing alibi size from 613 to 730
+  warnings.warn(
+/work/joaoinacio/.cache/huggingface/modules/transformers_modules/zhihan1996/DNABERT-2-117M/25abaf0bd247444fcfa837109f12088114898d98/bert_layers.py:432: UserWarning: Increasing alibi size from 730 to 879
+  warnings.warn(
+/work/joaoinacio/.cache/huggingface/modules/transformers_modules/zhihan1996/DNABERT-2-117M/25abaf0bd247444fcfa837109f12088114898d98/bert_layers.py:432: UserWarning: Increasing alibi size from 879 to 1014
+  warnings.warn(
+/work/joaoinacio/.cache/huggingface/modules/transformers_modules/zhihan1996/DNABERT-2-117M/25abaf0bd247444fcfa837109f12088114898d98/bert_layers.py:432: UserWarning: Increasing alibi size from 1014 to 1616
+  warnings.warn(
+/work/joaoinacio/.cache/huggingface/modules/transformers_modules/zhihan1996/DNABERT-2-117M/25abaf0bd247444fcfa837109f12088114898d98/bert_layers.py:432: UserWarning: Increasing alibi size from 1616 to 1679
+  warnings.warn(
+/work/joaoinacio/.cache/huggingface/modules/transformers_modules/zhihan1996/DNABERT-2-117M/25abaf0bd247444fcfa837109f12088114898d98/bert_layers.py:432: UserWarning: Increasing alibi size from 1679 to 1927
+  warnings.warn(
+/work/joaoinacio/.cache/huggingface/modules/transformers_modules/zhihan1996/DNABERT-2-117M/25abaf0bd247444fcfa837109f12088114898d98/bert_layers.py:432: UserWarning: Increasing alibi size from 1927 to 1935
+  warnings.warn(
+/work/joaoinacio/.cache/huggingface/modules/transformers_modules/zhihan1996/DNABERT-2-117M/25abaf0bd247444fcfa837109f12088114898d98/bert_layers.py:432: UserWarning: Increasing alibi size from 1935 to 1939
+  warnings.warn(
+/work/joaoinacio/.cache/huggingface/modules/transformers_modules/zhihan1996/DNABERT-2-117M/25abaf0bd247444fcfa837109f12088114898d98/bert_layers.py:432: UserWarning: Increasing alibi size from 1939 to 1949
+  warnings.warn(
+/work/joaoinacio/.cache/huggingface/modules/transformers_modules/zhihan1996/DNABERT-2-117M/25abaf0bd247444fcfa837109f12088114898d98/bert_layers.py:432: UserWarning: Increasing alibi size from 1949 to 1956
+  warnings.warn(
+/work/joaoinacio/.cache/huggingface/modules/transformers_modules/zhihan1996/DNABERT-2-117M/25abaf0bd247444fcfa837109f12088114898d98/bert_layers.py:432: UserWarning: Increasing alibi size from 1956 to 2004
+  warnings.warn(
+/work/joaoinacio/.cache/huggingface/modules/transformers_modules/zhihan1996/DNABERT-2-117M/25abaf0bd247444fcfa837109f12088114898d98/bert_layers.py:432: UserWarning: Increasing alibi size from 2004 to 2016
+  warnings.warn(
+/work/joaoinacio/.cache/huggingface/modules/transformers_modules/zhihan1996/DNABERT-2-117M/25abaf0bd247444fcfa837109f12088114898d98/bert_layers.py:432: UserWarning: Increasing alibi size from 2016 to 2095
+  warnings.warn(
+
++ echo Finished
+Finished
