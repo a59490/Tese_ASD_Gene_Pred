@@ -11,29 +11,33 @@ tokenizer = T5Tokenizer.from_pretrained('Rostlab/prot_t5_xl_half_uniref50-enc', 
 model = T5EncoderModel.from_pretrained("Rostlab/prot_t5_xl_half_uniref50-enc").to(device)
 
 # prepare your protein sequences as a list
-sequence_examples = ["PRTEINO", "SEQWENCE"]
+protein_sequences = ["PRTEINO", "SEQWENCE"]
 
 # replace all rare/ambiguous amino acids by X and introduce white-space between all amino acids
-sequence_examples = [" ".join(list(re.sub(r"[UZOB]", "X", sequence))) for sequence in sequence_examples]
+protein_sequences = [" ".join(list(re.sub(r"[UZOB]", "X", sequence))) for sequence in protein_sequences]
 
-# tokenize sequences and pad up to the longest sequence in the batch
-ids = tokenizer(sequence_examples, add_special_tokens=True, padding="longest")
+# List to hold all the protein embeddings
+all_embeddings = []
 
-input_ids = torch.tensor(ids['input_ids']).to(device)
-attention_mask = torch.tensor(ids['attention_mask']).to(device)
+# Iterate over each protein sequence
+for sequence in protein_sequences:
+    # tokenize sequences and pad up to the longest sequence in the batch
+    ids = tokenizer(sequence, add_special_tokens=True, padding="longest", return_tensors="pt").to(device)
+    input_ids = ids['input_ids']
+    attention_mask = ids['attention_mask']
 
-# generate embeddings
-with torch.no_grad():
-    embedding_repr = model(input_ids=input_ids, attention_mask=attention_mask)
+    # generate embeddings
+    with torch.no_grad():
+        embedding_repr = model(input_ids=input_ids, attention_mask=attention_mask)
 
-# extract residue embeddings for the first ([0,:]) sequence in the batch and remove padded & special tokens ([0,:7]) 
-emb_0 = embedding_repr.last_hidden_state[0,:7] # shape (7 x 1024)
-# same for the second ([1,:]) sequence but taking into account different sequence lengths ([1,:8])
-emb_1 = embedding_repr.last_hidden_state[1,:8] # shape (8 x 1024)
+    # extract residue embeddings and remove padded & special tokens
+    per_protein_embedding = embedding_repr.last_hidden_state.mean(dim=1)[0]  # shape (1024,)
+    
+    # Append the embedding to the list
+    all_embeddings.append(per_protein_embedding.tolist())
 
-# if you want to derive a single representation (per-protein embedding) for the whole protein
-emb_0_per_protein = emb_0.mean(dim=0) # shape (1024)
-
-print(emb_0_per_protein)
-
-print(len(emb_0_per_protein))
+# Write all the embeddings to a single file
+with open("all_protein_embeddings.txt", "w") as file:
+    for embedding in all_embeddings:
+        file.write(" ".join(map(str, embedding)))
+        file.write("\n")
