@@ -63,7 +63,7 @@ def model_hyperparameter_tuning(model, param_grid):
 
         y = dataset["4"].copy().astype('category')
 
-        grid=GridSearchCV(model, param_grid, cv=5, scoring=MCC, n_jobs=-1)
+        grid=GridSearchCV(model, param_grid, cv=5, scoring=MCC, n_jobs=16, verbose=1)
 
         search=grid.fit(x,y)
 
@@ -104,9 +104,9 @@ model_hyperparameter_tuning(model, param_grid)
 
 # Random Forest
 model = RandomForestClassifier()
-param_grid = {'n_estimators': [ 300, 1000, 2000], 'max_features': ['auto', 'sqrt', 'log2'],
-              'max_depth': [3, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100], 'min_samples_split': [2, 5, 10],
-              'min_samples_leaf': [1, 2, 4]}
+param_grid = {'n_estimators': [ 100, 200, 300, 400, 500, 1000], 'max_features': ['auto', 'sqrt', 'log2'],
+              'max_depth': [3, 5, 10, 20, 30, 40, 50, 100], 'min_samples_split': [2, 5, 10],
+              'min_samples_leaf': [1, 2, 4],"class_weight":["balanced"]}
 model_hyperparameter_tuning(model, param_grid)
 
 # SVM
@@ -122,12 +122,12 @@ model_hyperparameter_tuning(model, param_grid)
 
 #LightGBM
 model = LGBMClassifier()
-param_grid = {'n_estimators': [100, 200, 300, 1000, 2000], 'learning_rate': [0.01, 0.05, 0.1, 0.5, 1],
-              'max_depth': [3, 5, 10, 20, 30, 40, 50, 60, 70]}
+param_grid = {'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.01, 0.05, 0.1, 0.5, 1],
+              'max_depth': [3, 5, 10, 20, 30, 40, 50],"class_weight":["balanced"],"reg_alpha":[0,0.1,0.5,1,2,5,10]}
 model_hyperparameter_tuning(model, param_grid)
 
 #XGBoost
 model = XGBClassifier()
-param_grid = {'n_estimators': [100, 200, 300, 1000, 2000], 'learning_rate': [0.01, 0.05, 0.1, 0.5, 1],
-              'max_depth': [3, 5, 10, 20, 30, 40, 50, 60], "booster":['gbtree', 'gblinear', 'dart']}
+param_grid = {'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.01, 0.05, 0.1, 0.5, 1],
+              'max_depth': [3, 5, 10, 20, 30, 40, 50], "booster":['gbtree', 'gblinear', 'dart']}
 model_hyperparameter_tuning(model, param_grid)

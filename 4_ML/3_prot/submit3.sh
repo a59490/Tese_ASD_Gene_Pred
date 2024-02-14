@@ -21,6 +21,8 @@
 # send mail to this address
 #SBATCH --mail-user=joaopinacio96@gmail.com
 
+export OMP_NUM_THREADS=16
+
 # run the application
 echo "Now on: $PWD"
 $HOME/miniconda3/bin/conda run -n dna python /work/joaoinacio/work/Tese_ASD_Gene_Pred/4_ML/3_prot/ml_results.py
