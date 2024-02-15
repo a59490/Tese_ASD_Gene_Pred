@@ -98,7 +98,7 @@ dataset_list=[(cat_1,"Cat_1"),(cat_1_sd,"Cat_1_sd"),(cat_2,"Cat_1_2")
 
 # Logistic Regression
 model = LogisticRegression()
-param_grid = {'C': [0.001, 0.1, 1, 10, 100, 1000], 'penalty': ['l1', 'l2'],'max_iter':[300,400,500,1000],
+param_grid = {'C': [0.001, 0.1, 1, 10, 100, 1000], 'penalty': ['l2'],'max_iter':[500,1000],
                "solver": ['lbfgs', 'liblinear', 'newton-cg', 'newton-cholesky', 'sag', 'saga'], "class_weight":["balanced"]}
 model_hyperparameter_tuning(model, param_grid)
 
