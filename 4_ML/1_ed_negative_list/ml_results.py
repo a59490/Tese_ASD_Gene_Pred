@@ -54,7 +54,7 @@ def model_hyperparameter_tuning(model, param_grid):
 
         y = dataset["4"].copy().astype('category')
 
-        grid=GridSearchCV(model, param_grid, cv=5, scoring=MCC, verbose=1)
+        grid=GridSearchCV(model, param_grid, cv=5, scoring=MCC, verbose=1,n_jobs=5)
 
         search=grid.fit(x,y)
 
@@ -94,9 +94,8 @@ model_hyperparameter_tuning(model, param_grid)
 
 # Random Forest
 model = RandomForestClassifier(class_weight="balanced")
-param_grid = {'n_estimators': [ 100, 200, 300, 400, 500, 1000], 'max_features': ['sqrt', 'log2'],
-              'max_depth': [3, 5, 10], 'min_samples_split': [2, 5, 10],
-              'min_samples_leaf': [1, 2, 4]}
+param_grid = {'n_estimators': [1000], 'max_features': [ 'log2'],
+              'max_depth': [3, 5, 10], 'min_samples_split': [ 10]}
 model_hyperparameter_tuning(model, param_grid)
 
 # SVM
