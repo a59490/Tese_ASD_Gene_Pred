@@ -27,7 +27,7 @@ def cross_val(model, X, Y):
                         "Recall": "recall", "Precision": "precision","MCC":MCC, "Average Precision": "average_precision",
                         "Sensitivity": sensitivity_scorer, "Specificity": specificity_scorer}
 
-    scores=cross_validate(model, X, Y, scoring=scoring,)
+    scores=cross_validate(model, X, Y, scoring=scoring,n_jobs=5,cv=5)
 
     mean_scores = {metric: values.mean() for metric, values in scores.items()}
 
@@ -54,7 +54,7 @@ def model_hyperparameter_tuning(model, param_grid):
 
         y = dataset["4"].copy().astype('category')
 
-        grid=GridSearchCV(model, param_grid, cv=5, scoring=MCC, n_jobs=4, verbose=1)
+        grid=GridSearchCV(model, param_grid, cv=5, scoring=MCC, verbose=1)
 
         search=grid.fit(x,y)
 
@@ -93,7 +93,7 @@ param_grid = {'C': [0.001, 0.1, 1, 10, 100, 1000], 'penalty': ['l2']}
 model_hyperparameter_tuning(model, param_grid)
 
 # Random Forest
-model = RandomForestClassifier(class_weight="balanced",n_jobs=4)
+model = RandomForestClassifier(class_weight="balanced")
 param_grid = {'n_estimators': [ 100, 200, 300, 400, 500, 1000], 'max_features': ['sqrt', 'log2'],
               'max_depth': [3, 5, 10], 'min_samples_split': [2, 5, 10],
               'min_samples_leaf': [1, 2, 4]}

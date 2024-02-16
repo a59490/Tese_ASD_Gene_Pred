@@ -11,6 +11,8 @@ from lightgbm import LGBMClassifier
 from xgboost import XGBClassifier
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.neural_network import MLPClassifier
 
 from sklearn.model_selection import cross_validate
 from sklearn.metrics import make_scorer,matthews_corrcoef,recall_score
@@ -27,7 +29,7 @@ def cross_val(model, X, Y):
                         "Recall": "recall", "Precision": "precision","MCC":MCC, "Average Precision": "average_precision",
                         "Sensitivity": sensitivity_scorer, "Specificity": specificity_scorer}
 
-    scores=cross_validate(model, X, Y, scoring=scoring,)
+    scores=cross_validate(model, X, Y, scoring=scoring,n_jobs=5,cv=5)
 
     mean_scores = {metric: values.mean() for metric, values in scores.items()}
 
@@ -102,7 +104,7 @@ param_grid = {'C': [0.001, 0.1, 1, 10, 100, 1000]}
 model_hyperparameter_tuning(model, param_grid)
 
 # Random Forest
-model = RandomForestClassifier(class_weight="balanced",n_jobs=4)
+model = RandomForestClassifier(class_weight="balanced")
 param_grid = {'n_estimators': [ 100, 200, 300, 400, 500, 1000], 'max_features': [ 'sqrt', 'log2'],
               'max_depth': [3, 5, 10, 20, 30, 40, 50], 'min_samples_split': [2, 5, 10],
               'min_samples_leaf': [1, 2, 4]}
@@ -130,3 +132,18 @@ model = XGBClassifier(class_weight="balanced")
 param_grid = {'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.01, 0.05, 0.1, 0.5, 1],
               'max_depth': [3, 5, 10, 20, 30, 40, 50], "booster":['gbtree', 'gblinear', 'dart']}
 model_hyperparameter_tuning(model, param_grid)
+
+# Gaussian Naive Bayes (NB)
+model = GaussianNB()
+param_grid = {}  # Naive Bayes has no hyperparameters to tune
+model_hyperparameter_tuning(model, param_grid)
+
+# Neural Networks (NN)
+nn_model = MLPClassifier(max_iter=1000)
+nn_param_grid = {
+    'hidden_layer_sizes': [(100,), (50, 100, 50), (50, 50), (100, 100)],
+    'activation': ['identity', 'logistic', 'tanh', 'relu'],
+    'alpha': [0.0001, 0.001, 0.01],
+    'learning_rate': ['constant', 'invscaling', 'adaptive']
+}
+model_hyperparameter_tuning(nn_model, nn_param_grid)
