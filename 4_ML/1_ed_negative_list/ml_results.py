@@ -100,13 +100,12 @@ model_hyperparameter_tuning(model, param_grid)
 
 # SVM
 model = SVC(class_weight="balanced")
-param_grid = {'C': [0.1, 1, 10, 100, 1000], 'gamma': [1, 0.1, 0.01, 0.001, 0.0001], 'kernel': ['rbf', 'poly', 'sigmoid']
-              , 'degree': [3, 4, 5, 6, 7, 8, 9, 10]}
+param_grid = {'C': [1000], 'gamma': [1, 0.1, 0.01], 'kernel': ['rbf', 'poly', 'sigmoid']}
 model_hyperparameter_tuning(model, param_grid)
 
 # KNN
 model = KNeighborsClassifier()
-param_grid = {'n_neighbors': [2, 3, 5, 7, 10, 19], 'weights': ['uniform', 'distance'], 'metric': ['euclidean', 'manhattan']}
+param_grid = {'n_neighbors': [2], 'weights': ['uniform', 'distance']}
 model_hyperparameter_tuning(model, param_grid)
 
 #LightGBM
