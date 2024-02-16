@@ -54,7 +54,7 @@ def model_hyperparameter_tuning(model, param_grid):
 
         y = dataset["4"].copy().astype('category')
 
-        grid=GridSearchCV(model, param_grid, cv=5, scoring=MCC, verbose=1,n_jobs=5)
+        grid=GridSearchCV(model, param_grid, cv=5, scoring=MCC, verbose=1)
 
         search=grid.fit(x,y)
 
