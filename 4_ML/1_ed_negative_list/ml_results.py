@@ -93,9 +93,9 @@ param_grid = {'C': [0.001, 0.1, 1, 10, 100, 1000], 'penalty': ['l2']}
 model_hyperparameter_tuning(model, param_grid)
 
 # Random Forest
-model = RandomForestClassifier(class_weight="balanced")
-param_grid = {'n_estimators': [ 100, 200, 300, 400, 500, 1000], 'max_features': ['auto', 'sqrt', 'log2'],
-              'max_depth': [3, 5, 10, 20, 30, 40, 50], 'min_samples_split': [2, 5, 10],
+model = RandomForestClassifier(class_weight="balanced",n_jobs=4)
+param_grid = {'n_estimators': [ 100, 200, 300, 400, 500, 1000], 'max_features': ['sqrt', 'log2'],
+              'max_depth': [3, 5, 10], 'min_samples_split': [2, 5, 10],
               'min_samples_leaf': [1, 2, 4]}
 model_hyperparameter_tuning(model, param_grid)
 
