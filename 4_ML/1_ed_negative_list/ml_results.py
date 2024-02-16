@@ -110,12 +110,10 @@ model_hyperparameter_tuning(model, param_grid)
 
 #LightGBM
 model = LGBMClassifier(class_weight="balanced",n_jobs=1)
-param_grid = {'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.01, 0.05, 0.1, 0.5, 1],
-              'max_depth': [3, 5, 10, 20, 30, 40, 50],"reg_alpha":[0,0.1,0.5,1,2,5,10]}
+param_grid = {'n_estimators': [1000], 'learning_rate': [0.01, 0.05]}
 model_hyperparameter_tuning(model, param_grid)
 
 #XGBoost
 model = XGBClassifier(class_weight="balanced",n_jobs=1)
-param_grid = {'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.01, 0.05, 0.1, 0.5, 1],
-              'max_depth': [3, 5, 10, 20, 30, 40, 50], "booster":['gbtree', 'gblinear', 'dart']}
+param_grid = {'n_estimators': [1000], 'learning_rate': [0.01, 0.05]}
 model_hyperparameter_tuning(model, param_grid)
