@@ -83,38 +83,36 @@ dataset_list=[(cat_1,"Cat_1"),(cat_1_sd,"Cat_1_sd"),(cat_2,"Cat_1_2")
 
 
 # Logistic Regression
-model = LogisticRegression()
-param_grid = {'Cs': [0.001, 0.1, 1, 10, 100, 1000], 'penalty': ['l1', 'l2'],'max_iter':[100,200,300,400,500,1000,2000],
-               "solver": ['lbfgs', 'liblinear', 'newton-cg', 'newton-cholesky', 'sag', 'saga'], "class_weight":["balanced"]}
+model = LogisticRegression(max_iter=1000,class_weight="balanced")
+param_grid = {'C': [0.001, 0.1, 1, 10, 100, 1000]}
 model_hyperparameter_tuning(model, param_grid)
 
 # Random Forest
-model = RandomForestClassifier()
-param_grid = {'n_estimators': [100, 200, 300, 1000, 2000, 4000], 'max_features': ['auto', 'sqrt', 'log2'],
-              'max_depth': [3, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100], 'min_samples_split': [2, 5, 10],
-              'min_samples_leaf': [1, 2, 4],"class_weight":["balanced"]}
+model = RandomForestClassifier(class_weight="balanced")
+param_grid = {'n_estimators': [ 100, 200, 300, 400, 500, 1000], 'max_features': ['auto', 'sqrt', 'log2'],
+              'max_depth': [3, 5, 10, 20, 30, 40, 50], 'min_samples_split': [2, 5, 10],
+              'min_samples_leaf': [1, 2, 4]}
 model_hyperparameter_tuning(model, param_grid)
 
 # SVM
-model = SVC()
+model = SVC(lass_weight="balanced")
 param_grid = {'C': [0.1, 1, 10, 100, 1000], 'gamma': [1, 0.1, 0.01, 0.001, 0.0001], 'kernel': ['rbf', 'poly', 'sigmoid']
-              , 'degree': [3, 4, 5, 6, 7, 8, 9, 10],"class_weight":["balanced"]}
+              , 'degree': [3, 4, 5, 6, 7, 8, 9, 10]}
 model_hyperparameter_tuning(model, param_grid)
 
 # KNN
 model = KNeighborsClassifier()
-param_grid = {'n_neighbors': [2, 3, 5, 7, 10, 19], 'weights': ['uniform', 'distance'], 'metric': ['euclidean', 'manhattan'],
-              "class_weight":["balanced"]}
+param_grid = {'n_neighbors': [2, 3, 5, 7, 10, 19], 'weights': ['uniform', 'distance'], 'metric': ['euclidean', 'manhattan']}
 model_hyperparameter_tuning(model, param_grid)
 
 #LightGBM
-model = LGBMClassifier()
-param_grid = {'n_estimators': [100, 200, 300, 1000, 2000, 4000], 'learning_rate': [0.01, 0.05, 0.1, 0.5, 1],
-              'max_depth': [3, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],"class_weight":["balanced"]}
+model = LGBMClassifier(lass_weight="balanced")
+param_grid = {'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.01, 0.05, 0.1, 0.5, 1],
+              'max_depth': [3, 5, 10, 20, 30, 40, 50],"reg_alpha":[0,0.1,0.5,1,2,5,10]}
 model_hyperparameter_tuning(model, param_grid)
 
 #XGBoost
-model = XGBClassifier()
-param_grid = {'n_estimators': [100, 200, 300, 1000, 2000, 4000], 'learning_rate': [0.01, 0.05, 0.1, 0.5, 1],
-              'max_depth': [3, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100], "booster":['gbtree', 'gblinear', 'dart']}
+model = XGBClassifier(lass_weight="balanced")
+param_grid = {'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.01, 0.05, 0.1, 0.5, 1],
+              'max_depth': [3, 5, 10, 20, 30, 40, 50], "booster":['gbtree', 'gblinear', 'dart']}
 model_hyperparameter_tuning(model, param_grid)
