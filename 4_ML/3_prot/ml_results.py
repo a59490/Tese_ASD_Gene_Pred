@@ -97,7 +97,7 @@ dataset_list=[(cat_1,"Cat_1"),(cat_1_sd,"Cat_1_sd"),(cat_2,"Cat_1_2")
 
 
 # Logistic Regression
-model = LogisticRegression(max_iter=1000,class_weight="balenced")
+model = LogisticRegression(max_iter=1000,class_weight="balanced")
 param_grid = {'C': [0.001, 0.1, 1, 10, 100, 1000]}
 model_hyperparameter_tuning(model, param_grid)
 
@@ -109,7 +109,7 @@ param_grid = {'n_estimators': [ 100, 200, 300, 400, 500, 1000], 'max_features': 
 model_hyperparameter_tuning(model, param_grid)
 
 # SVM
-model = SVC(lass_weight="balanced")
+model = SVC(class_weight="balanced")
 param_grid = {'C': [0.1, 1, 10, 100, 1000], 'gamma': [1, 0.1, 0.01, 0.001, 0.0001], 'kernel': ['rbf', 'poly', 'sigmoid']
               , 'degree': [3, 4, 5, 6, 7, 8, 9, 10]}
 model_hyperparameter_tuning(model, param_grid)
@@ -120,13 +120,13 @@ param_grid = {'n_neighbors': [2, 3, 5, 7, 10, 19], 'weights': ['uniform', 'dista
 model_hyperparameter_tuning(model, param_grid)
 
 #LightGBM
-model = LGBMClassifier(lass_weight="balanced")
+model = LGBMClassifier(class_weight="balanced")
 param_grid = {'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.01, 0.05, 0.1, 0.5, 1],
               'max_depth': [3, 5, 10, 20, 30, 40, 50],"reg_alpha":[0,0.1,0.5,1,2,5,10]}
 model_hyperparameter_tuning(model, param_grid)
 
 #XGBoost
-model = XGBClassifier(lass_weight="balanced")
+model = XGBClassifier(class_weight="balanced")
 param_grid = {'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.01, 0.05, 0.1, 0.5, 1],
               'max_depth': [3, 5, 10, 20, 30, 40, 50], "booster":['gbtree', 'gblinear', 'dart']}
 model_hyperparameter_tuning(model, param_grid)
