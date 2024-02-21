@@ -29,7 +29,7 @@ def cross_val(model, X, Y):
                         "Recall": "recall", "Precision": "precision","MCC":MCC, "Average Precision": "average_precision",
                         "Sensitivity": sensitivity_scorer, "Specificity": specificity_scorer}
 
-    scores=cross_validate(model, X, Y, scoring=scoring,n_jobs=5,cv=5)
+    scores=cross_validate(model, X, Y, scoring=scoring,cv=5)
 
     mean_scores = {metric: values.mean() for metric, values in scores.items()}
 
