@@ -25,5 +25,5 @@ export OMP_NUM_THREADS=16
 
 # run the application
 echo "Now on: $PWD"
-$HOME/miniconda3/bin/conda run -n dna python /work/joaoinacio/work/Tese_ASD_Gene_Pred/4_ML/1_ed_negative_list/ml_results.py
+$HOME/miniconda3/bin/conda run -n sklearn-env python /work/joaoinacio/work/Tese_ASD_Gene_Pred/4_ML/1_ed_negative_list/ml_results.py lr
 echo "Finished"

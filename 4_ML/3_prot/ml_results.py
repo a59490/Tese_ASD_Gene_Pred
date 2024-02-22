@@ -138,12 +138,4 @@ model = GaussianNB()
 param_grid = {}  # Naive Bayes has no hyperparameters to tune
 model_hyperparameter_tuning(model, param_grid)
 
-# Neural Networks (NN)
-nn_model = MLPClassifier(max_iter=1000)
-nn_param_grid = {
-    'hidden_layer_sizes': [(100,), (50, 100, 50), (50, 50), (100, 100)],
-    'activation': ['identity', 'logistic', 'tanh', 'relu'],
-    'alpha': [0.0001, 0.001, 0.01],
-    'learning_rate': ['constant', 'invscaling', 'adaptive']
-}
-model_hyperparameter_tuning(nn_model, nn_param_grid)
+
