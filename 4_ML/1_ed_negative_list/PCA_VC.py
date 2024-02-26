@@ -4,6 +4,10 @@ import argparse
 
 from sklearn.model_selection import cross_validate
 from sklearn.metrics import make_scorer, matthews_corrcoef, recall_score
+from sklearn.metrics import roc_auc_score, accuracy_score, f1_score, recall_score, precision_score, average_precision_score
+from sklearn.model_selection import StratifiedKFold
+
+
 from sklearn.model_selection import GridSearchCV
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
@@ -13,45 +17,106 @@ from lightgbm import LGBMClassifier
 from xgboost import XGBClassifier
 from sklearn.naive_bayes import GaussianNB
 
-def cross_val(model, X, Y):
+from sklearn.feature_selection import SequentialFeatureSelector
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+
+
+
+# Model hyperparameter tuning-------------------------------------------------------------------
+def model_evaluation(model, param_grid, dataset_list, model_name):
+    
     sensitivity_scorer = make_scorer(recall_score)
     specificity_scorer = make_scorer(recall_score, pos_label=0)
     MCC = make_scorer(matthews_corrcoef)
 
-    scoring = {'AUC': 'roc_auc', 'Accuracy': "accuracy", "f1": "f1",
-               "Recall": "recall", "Precision": "precision", "MCC": MCC, "Average Precision": "average_precision",
-               "Sensitivity": sensitivity_scorer, "Specificity": specificity_scorer}
+    scoring = {'AUC': roc_auc_score,'Accuracy': accuracy_score, "f1": f1_score,
+            "Recall": recall_score,"Precision": precision_score, "Average Precision": average_precision_score,
+            "Sensitivity": sensitivity_scorer, "Specificity": specificity_scorer, "MCC": MCC}
 
-    scores = cross_validate(model, X, Y, scoring=scoring, cv=5)
+    # Create the folds
+    cat_1=dataset_list[0][0]
+    X_fold=cat_1["3"].copy()
 
-    mean_scores = {metric: values.mean() for metric, values in scores.items()}
+    y_fold=cat_1["4"].copy()
 
-    return mean_scores
+    skf = StratifiedKFold(n_splits=5)
 
-def model_hyperparameter_tuning(model, param_grid, dataset_list, model_name):
-    MCC = make_scorer(matthews_corrcoef)
-    results_list = []
-
+    #Iterate through the datasets
+    dataset_results = []
     for dataset, name in dataset_list:
-        x = dataset["3"].copy()
-        x = x.str.split(expand=True)
-        x = x.astype(float)
+        results_list = []
 
-        y = dataset["4"].copy().astype('category')
+        for i, (train_index, test_index) in enumerate(skf.split(X_fold, y_fold)):
+                
+            cat_1 = pd.read_csv('gene_lists/cat_1.csv.gz', compression='gzip')
 
-        grid = GridSearchCV(model, param_grid, cv=5, scoring=MCC, verbose=1)
+            # Fold filters
+            
+            test_filter = cat_1["0"].iloc[test_index]
 
-        results = cross_val(grid, x, y)
-        result_entry = {'dataset_name': name, **results, "model": model_name}
+            test_dataset= cat_1[cat_1['0'].isin(test_filter)]
+                
+            dataset_ed = dataset[~dataset['0'].isin(test_filter)]
 
-        results_list.append(result_entry)
+            # create X and Y
+            X_data = dataset_ed["3"].copy()
+            X_data = X_data.str.split(expand=True)
+            X_data = X_data.astype(float)
 
-    results_df = pd.DataFrame(results_list)
-    results_df.set_index('dataset_name', inplace=True)
+            y_data = dataset_ed["4"].copy().astype('category')
 
-    with open('model_results.csv', 'a') as f:
-        results_df.to_csv(f)
+            # PCA train
+
+            pca=PCA(n_components=0.90)
+
+            X_data = pca.fit_transform(X_data)
+
+            #fit model with best param_grid
+            grid = GridSearchCV(estimator=model, param_grid=param_grid, cv=5, scoring=MCC, verbose=1, refit=True)
+
+            search = grid.fit(X_data, y_data)
+
+            best_model = search.best_estimator_
+
+            #edit test data
+            test_data_x= test_dataset["3"].copy()
+            test_data_x = test_data_x.str.split(expand=True)
+            test_data_x = test_data_x.astype(float)
+
+
+            test_data_y = test_dataset["4"].copy().astype('category')
+
+            #PCA test
+            test_data_x = pca.transform(test_data_x)
+
+            #make the predictions
+            y_pred = search.predict(test_data_x)
+            y_true = test_data_y
+
+            #calculate the scores
+            scores = {}
+            for metric, scorer in scoring.items():
+                if metric in ['Sensitivity', 'Specificity', 'MCC']:
+                    scores[metric] = scorer(best_model, test_data_x, test_data_y,sample_weight=None)
+                else:
+                    scores[metric] = scorer(y_true, y_pred)
+
+            results_list.append(scores)
+
+        mean_scores = {metric: np.mean([result[metric] for result in results_list]) for metric in scoring}
+        mean_scores['model'] = model_name
+        mean_scores['dataset_name'] = name  
         
+        dataset_results.append(mean_scores)
+
+    results_df = pd.DataFrame(dataset_results)
+    results_df.set_index('dataset_name', inplace=True)
+    
+    with open('PCA_results.csv', 'a') as f:
+        results_df.to_csv(f)
+
+# Parse arguments---------------------------------------------------------------------------------          
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Model hyperparameter tuning.')
@@ -94,8 +159,8 @@ if __name__ == "__main__":
     # Model hyperparameter tuning-------------------------------------------------------------------
     if args.model == 'all':
         for model_name, (model, param_grid) in model_params.items():
-            model_hyperparameter_tuning(model, param_grid, dataset_list, model_name)
+            model_evaluation(model, param_grid, dataset_list, model_name)
 
     elif args.model in model_params:
         model, param_grid = model_params[args.model]
-        model_hyperparameter_tuning(model, param_grid, dataset_list, args.model)
+        model_evaluation(model, param_grid, dataset_list, args.model)
