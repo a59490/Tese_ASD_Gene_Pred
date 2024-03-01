@@ -17,6 +17,7 @@ from lightgbm import LGBMClassifier
 from xgboost import XGBClassifier
 from sklearn.naive_bayes import GaussianNB
 
+from sklearn.preprocessing import StandardScaler
 
 # Model hyperparameter tuning-------------------------------------------------------------------
 def model_evaluation(model, param_grid, dataset_list, model_name):
@@ -62,7 +63,7 @@ def model_evaluation(model, param_grid, dataset_list, model_name):
             y_data = dataset_ed["4"].copy().astype('category')
 
             #fit model with best param_grid
-            grid = GridSearchCV(estimator=model, param_grid=param_grid, cv=5, scoring=MCC, verbose=1, refit=True)
+            grid = GridSearchCV(estimator=model, param_grid=param_grid, cv=5, scoring='f1', verbose=1, refit=True)
 
             search = grid.fit(X_data, y_data)
 
@@ -89,7 +90,9 @@ def model_evaluation(model, param_grid, dataset_list, model_name):
 
             results_list.append(scores)
 
-        mean_scores = {metric: np.mean([result[metric] for result in results_list]) for metric in scoring}
+
+        mean_scores = {metric: (round(np.mean([result[metric] for result in results_list]), 6),
+                                    round(np.std([result[metric] for result in results_list]), 6)) for metric in scoring}
         mean_scores['model'] = model_name
         mean_scores['dataset_name'] = name  
         
@@ -126,18 +129,24 @@ if __name__ == "__main__":
     # Define models and parameter grids---------------------------------------------------------------
 
     model_params = {
-        'lr': (LogisticRegression(max_iter=1000, class_weight="balanced", n_jobs=10), {'C': [ 0.001, 0.1, 1, 10, 100, 1000]}),
-        'rf': (RandomForestClassifier(class_weight="balanced", n_jobs=10), {'n_estimators': [100, 200, 300, 400, 500, 1000], 'max_features': ['sqrt', 'log2'],
-                  'max_depth': [3, 5, 10, 20, 30, 40, 50], 'min_samples_split': [2, 5, 10],
-                  'min_samples_leaf': [1, 2, 4]}),
-        'svm': (SVC(class_weight="balanced"), {'C': [0.1, 1, 10, 100, 1000], 'gamma': [1, 0.1, 0.01, 0.001, 0.0001],
-                  'kernel': ['rbf', 'poly', 'sigmoid'], 'degree': [3, 4, 5, 6, 7, 8, 9, 10]}),
-        'knn': (KNeighborsClassifier(n_jobs=10), {'n_neighbors': [2, 3, 5, 7, 10, 19], 'weights': ['uniform', 'distance'],
-                  'metric': ['euclidean', 'manhattan']}),
-        'lgbm': (LGBMClassifier(class_weight="balanced", n_jobs=10), {'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.01, 0.05, 0.1, 0.5, 1],
-                  'max_depth': [3, 5, 10, 20, 30, 40, 50], "reg_alpha": [0, 0.1, 0.5, 1, 2, 5, 10]}),
-        'xgb': (XGBClassifier(class_weight="balanced", n_jobs=10), {'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.01, 0.05, 0.1, 0.5, 1],
-                  'max_depth': [3, 5, 10, 20, 30, 40, 50], "booster": ['gbtree', 'gblinear', 'dart']}),
+        'lr': (LogisticRegression(max_iter=2000, class_weight="balanced", n_jobs=10), {'C': [0.001, 0.1, 1, 10, 100, 1000]}),
+
+        'rf': (RandomForestClassifier(class_weight="balanced", n_jobs=10), {'n_estimators': [ 100, 200, 300, 400, 500, 1000], 'max_features': [ 'sqrt', 'log2'],
+              'max_depth': [3, 5, 10, 20, 30, 40, 50], 'min_samples_split': [2, 5, 10],
+              'min_samples_leaf': [1, 2, 4], 'criterion': ['gini', 'entropy']}),
+
+        'svm': (SVC(class_weight="balanced"), {'C': [0.1, 1, 10, 100, 1000], 'gamma': ['scale','auto',1, 0.1, 0.01, 0.001, 0.0001],
+              'degree': [3, 4, 5, 6, 7, 8, 9, 10],'kernel': ['rbf', 'poly', 'sigmoid','sigmoid', 'precomputed']}),
+
+        'knn': (KNeighborsClassifier(n_jobs=10), {'n_neighbors': [ 2, 3, 5, 7, 9, 11], 'weights': ['uniform', 'distance'], 'algorithm': ['auto', 'ball_tree', 'kd_tree'],
+                  'metric': ['euclidean', 'manhattan', 'minkowski']}),
+
+        'lgbm': (LGBMClassifier(class_weight="balanced", n_jobs=10), {'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.0001, 0.01, 0.05, 0.1, 0.5, 1, 10, 100],
+                  'max_depth': [-1, 3, 5, 10, 20, 30], "reg_alpha": [0, 0.1, 0.5, 1, 2, 5, 10]}),
+
+        'xgb': (XGBClassifier(class_weight="balanced", n_jobs=10), {'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.0001, 0.01, 0.05, 0.1, 0.5, 1, 10, 100],
+                  'max_depth': [-1, 3, 5, 10, 20, 30], "booster": ['gbtree', 'gblinear', 'dart']}),
+                  
         'nb': (GaussianNB(), {})
     }
 

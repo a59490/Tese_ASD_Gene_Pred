@@ -19,18 +19,10 @@ from sklearn.naive_bayes import GaussianNB
 
 from sklearn.preprocessing import StandardScaler
 
-
-
-def remover(x):
-    x = x.str.replace(' ','')
-    x = x.str.replace('\'','')
-    x = x.str.replace('[','')
-    x = x.str.replace(']','')
-    return x
-
-
 # Model hyperparameter tuning-------------------------------------------------------------------
 def model_evaluation(model, param_grid, dataset_list, model_name):
+
+    model_name = model_name + " scaled"
     
     sensitivity_scorer = make_scorer(recall_score)
     specificity_scorer = make_scorer(recall_score, pos_label=0)
@@ -58,6 +50,7 @@ def model_evaluation(model, param_grid, dataset_list, model_name):
             cat_1 = pd.read_csv('gene_lists/cat_1.csv.gz', compression='gzip')
 
             # Fold filters
+            
             test_filter = cat_1["0"].iloc[test_index]
 
             test_dataset= cat_1[cat_1['0'].isin(test_filter)]
@@ -66,11 +59,15 @@ def model_evaluation(model, param_grid, dataset_list, model_name):
 
             # create X and Y
             X_data = dataset_ed["3"].copy()
-            X_data = X_data.str.split(expand=True,pat=',')
-            X_data= X_data.apply(remover)
+            X_data = X_data.str.split(expand=True)
             X_data = X_data.astype(float)
+        
 
             y_data = dataset_ed["4"].copy().astype('category')
+
+            #scale the data
+            scaler = StandardScaler()
+            X_data = scaler.fit_transform(X_data)
 
             #fit model with best param_grid
             grid = GridSearchCV(estimator=model, param_grid=param_grid, cv=5, scoring='f1', verbose=1, refit=True)
@@ -81,11 +78,13 @@ def model_evaluation(model, param_grid, dataset_list, model_name):
 
             #edit test data
             test_data_x= test_dataset["3"].copy()
-            test_data_x = test_data_x.str.split(expand=True,pat=',')
-            test_data_x = test_data_x.apply(remover)
+            test_data_x = test_data_x.str.split(expand=True)
             test_data_x = test_data_x.astype(float)
 
             test_data_y = test_dataset["4"].copy().astype('category')
+
+            #scale the test data
+            test_data_x = scaler.transform(test_data_x)
 
             #make the predictions
             y_pred = search.predict(test_data_x)
@@ -101,9 +100,9 @@ def model_evaluation(model, param_grid, dataset_list, model_name):
 
             results_list.append(scores)
 
+
         mean_scores = {metric: (round(np.mean([result[metric] for result in results_list]), 6),
                                     round(np.std([result[metric] for result in results_list]), 6)) for metric in scoring}
-        
         mean_scores['model'] = model_name
         mean_scores['dataset_name'] = name  
         
@@ -112,7 +111,7 @@ def model_evaluation(model, param_grid, dataset_list, model_name):
     results_df = pd.DataFrame(dataset_results)
     results_df.set_index('dataset_name', inplace=True)
     
-    with open('model_results.csv', 'a') as f:
+    with open('scaled_model_results.csv', 'a') as f:
         results_df.to_csv(f)
 
 # Parse arguments---------------------------------------------------------------------------------          
@@ -160,7 +159,7 @@ if __name__ == "__main__":
                   
         'nb': (GaussianNB(), {})
     }
-
+    
     # Model hyperparameter tuning-------------------------------------------------------------------
     if args.model == 'all':
         for model_name, (model, param_grid) in model_params.items():

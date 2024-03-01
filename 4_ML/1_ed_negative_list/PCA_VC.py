@@ -104,7 +104,10 @@ def model_evaluation(model, param_grid, dataset_list, model_name):
 
             results_list.append(scores)
 
-        mean_scores = {metric: np.mean([result[metric] for result in results_list]) for metric in scoring}
+            mean_scores = {metric: (round(np.mean([result[metric] for result in results_list]), 6),
+                                    round(np.std([result[metric] for result in results_list]), 6)) for metric in scoring}
+
+        
         mean_scores['model'] = model_name
         mean_scores['dataset_name'] = name  
         
@@ -141,7 +144,7 @@ if __name__ == "__main__":
     # Define models and parameter grids---------------------------------------------------------------
 
     model_params = {
-        'lr': (LogisticRegression(max_iter=1000, class_weight="balanced", n_jobs=10), {'C': [0.001, 0.1, 1, 10, 100, 1000]}),
+        'lr': (LogisticRegression(max_iter=1000, class_weight="balanced", n_jobs=10), {'C': [80]}),
         'rf': (RandomForestClassifier(class_weight="balanced", n_jobs=10), {'n_estimators': [100, 200, 300, 400, 500, 1000], 'max_features': ['sqrt', 'log2'],
                   'max_depth': [3, 5, 10, 20, 30, 40, 50], 'min_samples_split': [2, 5, 10],
                   'min_samples_leaf': [1, 2, 4]}),

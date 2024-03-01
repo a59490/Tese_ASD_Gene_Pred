@@ -1,6 +1,0 @@
-+ export OMP_NUM_THREADS=16
-+ OMP_NUM_THREADS=16
-+ echo 'Now on: /work/joaoinacio/work/Tese_ASD_Gene_Pred/4_ML/3_prot'
-Now on: /work/joaoinacio/work/Tese_ASD_Gene_Pred/4_ML/3_prot
-+ /work/joaoinacio/miniconda3/bin/conda run -n sklearn-env python /work/joaoinacio/work/Tese_ASD_Gene_Pred/4_ML/3_prot/ml_results.py
-slurmstepd-bio202: error: *** JOB 44888 ON bio202 CANCELLED AT 2024-02-20T22:23:21 DUE TO TIME LIMIT ***
