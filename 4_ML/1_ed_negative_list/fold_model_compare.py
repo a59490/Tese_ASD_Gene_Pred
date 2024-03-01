@@ -101,8 +101,7 @@ def model_evaluation(model, param_grid, dataset_list, model_name):
     results_df = pd.DataFrame(dataset_results)
     results_df.set_index('dataset_name', inplace=True)
     
-    with open('model_results.csv', 'a') as f:
-        results_df.to_csv(f)
+    results_df.to_csv(f'./Results/{model_name}_results.csv')
 
 # Parse arguments---------------------------------------------------------------------------------          
 
