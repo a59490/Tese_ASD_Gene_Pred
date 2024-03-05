@@ -135,7 +135,7 @@ if __name__ == "__main__":
               'min_samples_leaf': [1, 2, 4], 'criterion': ['gini', 'entropy']}),
 
         'svm': (SVC(class_weight="balanced"), {'C': [0.1, 1, 10, 100, 1000], 'gamma': ['scale','auto',1, 0.1, 0.01, 0.001, 0.0001],
-              'degree': [3, 4, 5, 6, 7, 8, 9, 10],'kernel': ['rbf', 'poly', 'sigmoid','sigmoid', 'precomputed']}),
+              'degree': [3, 4, 5, 6, 7, 8, 9, 10],'kernel': ['rbf', 'poly', 'sigmoid','sigmoid']}),
 
         'knn': (KNeighborsClassifier(n_jobs=10), {'n_neighbors': [ 2, 3, 5, 7, 9, 11], 'weights': ['uniform', 'distance'], 'algorithm': ['auto', 'ball_tree', 'kd_tree'],
                   'metric': ['euclidean', 'manhattan', 'minkowski']}),
