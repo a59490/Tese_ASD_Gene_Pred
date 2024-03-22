@@ -16,6 +16,8 @@ from sklearn.neighbors import KNeighborsClassifier
 from lightgbm import LGBMClassifier
 from xgboost import XGBClassifier
 from sklearn.naive_bayes import GaussianNB
+from sklearn.neural_network import MLPClassifier
+
 
 from sklearn.preprocessing import StandardScaler
 
@@ -118,8 +120,8 @@ def model_evaluation(model, param_grid, dataset_list, model_name):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Model hyperparameter tuning.')
-    parser.add_argument('model', choices=['lr', 'rf', 'svm', 'knn', 'lgbm', 'xgb', 'nb', 'all'],
-                        help='Model to perform hyperparameter tuning: lr (Logistic Regression), rf (Random Forest), svm (Support Vector Machine), knn (K-Nearest Neighbors), lgbm (LightGBM), xgb (XGBoost), nb (Naive Bayes), all (to run all models)')
+    parser.add_argument('model', choices=['lr', 'rf', 'svm', 'knn', 'lgbm', 'xgb', 'nb','nn' , 'all'],
+                        help='Model to perform hyperparameter tuning: lr (Logistic Regression), rf (Random Forest), svm (Support Vector Machine), knn (K-Nearest Neighbors), lgbm (LightGBM), xgb (XGBoost), nb (Naive Bayes), nn (Neural Networks) all (to run all models)')
     args = parser.parse_args()
 
     # Load datasets---------------------------------------------------------------------------------
@@ -157,7 +159,10 @@ if __name__ == "__main__":
         'xgb': (XGBClassifier(class_weight="balanced", n_jobs=10), {'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.0001, 0.01, 0.05, 0.1, 0.5, 1, 10, 100],
                   'max_depth': [-1, 3, 5, 10, 20, 30], "booster": ['gbtree', 'gblinear', 'dart']}),
                   
-        'nb': (GaussianNB(), {})
+        'nb': (GaussianNB(), {}),
+
+        'nn': (MLPClassifier(max_iter=2000), {'hidden_layer_sizes': [(15,10)], 'activation': [ 'tanh', 'relu'],
+                                            'solver':['adam', 'lbfgs']})
     }
 
     # Model hyperparameter tuning-------------------------------------------------------------------

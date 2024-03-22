@@ -22,7 +22,7 @@ from sklearn.preprocessing import StandardScaler
 # Model hyperparameter tuning-------------------------------------------------------------------
 def model_evaluation(model, param_grid, dataset_list, model_name):
 
-    model_name = model_name + " scaled"
+    model_name = model_name + "_scaled"
     
     sensitivity_scorer = make_scorer(recall_score)
     specificity_scorer = make_scorer(recall_score, pos_label=0)
