@@ -27,7 +27,7 @@ def remover(x):
 
 cat_1_sd = pd.read_csv('cat_1_sd.csv.gz', compression='gzip')
 
-emb_file = pd.read_csv('prot_emb.csv.gz', compression='gzip', header=None)
+emb_file = pd.read_csv('final_prot_emb.csv.gz', compression='gzip', header=None)
 
 
 # Filter the cat1 genes from the all_genes
@@ -84,7 +84,7 @@ for i, (train_index, test_index) in enumerate(skf.split(X_fold, y_fold)):
     model=SVC(class_weight="balanced" ,probability=True)
 
     # Params ----------------------
-    params={'C': [100]}
+    params={'C': [0.1, 1, 10, 100, 1000], 'gamma': ['scale','auto',1, 0.1, 0.01, 0.001, 0.0001],'kernel': ['rbf', 'poly', 'sigmoid','sigmoid']}
 
     grid_model= GridSearchCV(estimator=model, param_grid=params, cv=5, scoring='f1', verbose=1, refit=True)
 
@@ -107,7 +107,7 @@ cat_1_y = cat_1_sd["4"].copy().astype('category')
 model=SVC(class_weight="balanced" ,probability=True)
 
 # Params ----------------------
-params={'C': [100]}
+params={'C': [0.1, 1, 10, 100, 1000], 'gamma': ['scale','auto',1, 0.1, 0.01, 0.001, 0.0001],'kernel': ['rbf', 'poly', 'sigmoid','sigmoid']}
 
 grid_model= GridSearchCV(estimator=model, param_grid=params, cv=5, scoring='f1', verbose=1, refit=True)
 search=grid_model.fit(cat_1_x, cat_1_y)
@@ -139,7 +139,7 @@ concat_df = concat_df.sort_values(by='Probability_Class_1', ascending=False)
 
 
 # Save the result
-concat_df.to_csv("Results/test.csv", index=False)
+concat_df.to_csv("Results/svc.csv", index=False)
 
 # Clean the data
 from Csv_clean import *
