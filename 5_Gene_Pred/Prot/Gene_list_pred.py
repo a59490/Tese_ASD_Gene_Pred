@@ -9,6 +9,8 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
+from xgboost import XGBClassifier
+
 
 
 from sklearn.linear_model import LogisticRegressionCV
@@ -81,10 +83,11 @@ for i, (train_index, test_index) in enumerate(skf.split(X_fold, y_fold)):
 
 
     # model ----------------------
-    model=SVC(class_weight="balanced" ,probability=True)
+    model=XGBClassifier(class_weight="balanced", n_jobs=10)
 
     # Params ----------------------
-    params={'C': [0.1, 1, 10, 100, 1000], 'gamma': ['scale','auto',1, 0.1, 0.01, 0.001, 0.0001],'kernel': ['rbf', 'poly', 'sigmoid','sigmoid']}
+    params={'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.0001, 0.01, 0.05, 0.1, 0.5, 1, 10, 100],
+                  'max_depth': [-1, 3, 5, 10, 20, 30], "booster": ['gbtree', 'gblinear', 'dart']}
 
     grid_model= GridSearchCV(estimator=model, param_grid=params, cv=5, scoring='f1', verbose=1, refit=True)
 
@@ -104,10 +107,11 @@ cat_1_x = cat_1_x.str.split(expand=True,pat=',').apply(remover).astype(float)
 cat_1_y = cat_1_sd["4"].copy().astype('category')
 
 # model ----------------------
-model=SVC(class_weight="balanced" ,probability=True)
+model=XGBClassifier(class_weight="balanced", n_jobs=10)
 
 # Params ----------------------
-params={'C': [0.1, 1, 10, 100, 1000], 'gamma': ['scale','auto',1, 0.1, 0.01, 0.001, 0.0001],'kernel': ['rbf', 'poly', 'sigmoid','sigmoid']}
+params={'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.0001, 0.01, 0.05, 0.1, 0.5, 1, 10, 100],
+                  'max_depth': [-1, 3, 5, 10, 20, 30], "booster": ['gbtree', 'gblinear', 'dart']}
 
 grid_model= GridSearchCV(estimator=model, param_grid=params, cv=5, scoring='f1', verbose=1, refit=True)
 search=grid_model.fit(cat_1_x, cat_1_y)
@@ -139,7 +143,7 @@ concat_df = concat_df.sort_values(by='Probability_Class_1', ascending=False)
 
 
 # Save the result
-concat_df.to_csv("Results/svc.csv", index=False)
+concat_df.to_csv("Results/xgb.csv", index=False)
 
 # Clean the data
 from Csv_clean import *
