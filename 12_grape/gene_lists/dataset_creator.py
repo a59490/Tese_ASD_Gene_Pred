@@ -42,4 +42,4 @@ def dataset_creator(dataset_sfari,emb_file,gene_list):
         final_dataset.to_csv(name+'.csv.gz', index=False, compression='gzip')
     
 
-dataset_creator('sfari_ed_01_16_2024.csv','string_v12.csv',"gene_list_krs_clean.csv")
+dataset_creator('sfari_ed_01_16_2024.csv','Node2Vec.csv',"gene_list_krs_clean.csv")

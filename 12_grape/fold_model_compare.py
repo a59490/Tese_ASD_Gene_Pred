@@ -134,7 +134,7 @@ if __name__ == "__main__":
     # Define models and parameter grids---------------------------------------------------------------
 
     model_params = {
-        'lr': (LogisticRegression(max_iter=2000, class_weight="balanced", n_jobs=10), {'C': [1,10,50,100]}),
+        'lr': (LogisticRegression(max_iter=2000, class_weight="balanced", n_jobs=10), {'C': [10]}),
 
         'rf': (RandomForestClassifier(class_weight="balanced", n_jobs=10), {'n_estimators': [ 100, 200, 300, 400, 500, 1000], 'max_features': [ 'sqrt', 'log2'],
               'max_depth': [3, 5, 10, 20, 30, 40, 50], 'min_samples_split': [2, 5, 10],
