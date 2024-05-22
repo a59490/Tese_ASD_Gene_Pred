@@ -161,7 +161,7 @@ if __name__ == "__main__":
                 dataset_list = [(pd.read_csv(path, compression='gzip')[~pd.read_csv(path, compression='gzip')['1'].isin(values_to_remove)], name) for name, path in dataset_paths.items()]
 
                 final_result = model_evaluation(model, param_grid, dataset_list, model_name)
-                final_result.to_csv(f"Results/{model_name}_{os.path.basename(path).split('.')[0]}.csv")
+                final_result.to_csv(f"Results/{model_name}/{model_name}_{os.path.basename(path).split('.')[0]}.csv")
 
     elif args.model in model_params:
         model, param_grid = model_params[args.model]

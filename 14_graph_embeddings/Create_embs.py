@@ -38,8 +38,7 @@ string_graph.remove_disconnected_nodes()
 embedding_list = [("first_order_line", FirstOrderLINEEnsmallen(embedding_size=200)), ("second_order_line", SecondOrderLINEEnsmallen(embedding_size=200)),
                    ("node2vec_skipgram", Node2VecSkipGramEnsmallen(embedding_size=200)), ("node2vec_cbow", Node2VecCBOWEnsmallen(embedding_size=200)),
                      ("glee", GLEEEnsmallen(embedding_size=200)), ("deepwalk_skipgram", DeepWalkSkipGramEnsmallen(embedding_size=200)),
-                       ("deepwalk_cbow", DeepWalkCBOWEnsmallen(embedding_size=200)), ("hope", HOPEEnsmallen(embedding_size=200)),("walklets_cbow", WalkletsCBOWEnsmallen(embedding_size=200)),
-                         ("walklets_skipgram", WalkletsSkipGramEnsmallen(embedding_size=200))]
+                       ("deepwalk_cbow", DeepWalkCBOWEnsmallen(embedding_size=200)), ("hope", HOPEEnsmallen(embedding_size=200)),("walklets_cbow", WalkletsCBOWEnsmallen(embedding_size=200))]
 
 def make_embedding(embedding_list, graph):
     for emb_name,algorithm in embedding_list:
