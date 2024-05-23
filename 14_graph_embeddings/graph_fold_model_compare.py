@@ -124,9 +124,9 @@ if __name__ == "__main__":
     model_params = {
         'lr': (LogisticRegression(max_iter=2000, class_weight="balanced", n_jobs=10), {'C': [0.001, 0.1, 1, 10, 100, 1000]}),
 
-        'svm': (SVC(class_weight="balanced"), {'C': [0.1, 1, 10, 100, 1000], 'gamma': ['scale','auto',1, 0.1, 0.01, 0.001, 0.0001],
-              'degree': [3, 4, 5, 6, 7, 8, 9, 10],'kernel': ['rbf', 'poly', 'sigmoid','sigmoid']}),
-        'lgm': (LGBMClassifier(class_weight='balanced', n_jobs=10), {'n_estimators': [100, 200]}),
+        'svm': (SVC(class_weight="balanced"), {'C': [0.1, 1, 10, 100, 1000], 'gamma': ['scale','auto',1, 0.1, 0.01],'kernel': ['rbf', 'poly','sigmoid']}),
+        'lgm': (LGBMClassifier(class_weight='balanced', n_jobs=10), 
+                {'n_estimators': [100, 200], 'max_depth': [5, 10, 20], 'learning_rate': [0.01, 0.1, 1]})
 
     }
 
