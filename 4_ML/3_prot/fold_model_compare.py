@@ -145,7 +145,7 @@ if __name__ == "__main__":
 
         'rf': (RandomForestClassifier(class_weight="balanced", n_jobs=10), {'n_estimators': [ 100, 200, 300, 400, 500, 1000], 'max_features': [ 'sqrt', 'log2'],
               'max_depth': [3, 5, 10, 20, 30, 40, 50], 'min_samples_split': [2, 5, 10],
-              'min_samples_leaf': [1, 2, 4], 'criterion': ['gini', 'entropy']}),
+              'min_samples_leaf': [1, 2, 4]}),
 
         'svm': (SVC(class_weight="balanced"), {'C': [0.1, 1, 10, 100, 1000], 'gamma': ['scale','auto',1, 0.1, 0.01, 0.001, 0.0001],
               'degree': [3, 4, 5, 6, 7, 8, 9, 10],'kernel': ['rbf', 'poly', 'sigmoid','sigmoid']}),
@@ -154,10 +154,10 @@ if __name__ == "__main__":
                   'metric': ['euclidean', 'manhattan', 'minkowski']}),
 
         'lgbm': (LGBMClassifier(class_weight="balanced", n_jobs=10), {'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.0001, 0.01, 0.05, 0.1, 0.5, 1, 10, 100],
-                  'max_depth': [-1, 3, 5, 10, 20, 30], "reg_alpha": [0, 0.1, 0.5, 1, 2, 5, 10]}),
+                  'max_depth': [2, 3, 5, 10, 20, 30], "reg_alpha": [0, 0.1, 0.5, 1, 2, 5, 10]}),
 
         'xgb': (XGBClassifier(class_weight="balanced", n_jobs=10), {'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.0001, 0.01, 0.05, 0.1, 0.5, 1, 10, 100],
-                  'max_depth': [-1, 3, 5, 10, 20, 30], "booster": ['gbtree', 'gblinear', 'dart']}),
+                  'max_depth': [2, 3, 5, 10, 20, 30]}),
                   
         'nb': (GaussianNB(), {}),
 
