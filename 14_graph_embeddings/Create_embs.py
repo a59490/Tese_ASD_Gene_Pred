@@ -1,5 +1,6 @@
 from grape import Graph
 import pandas as pd
+import os
 
 from grape import GraphVisualizer
 from grape.embedders import FirstOrderLINEEnsmallen
@@ -44,8 +45,17 @@ from grape.embedders import WalkletsSkipGramEnsmallen
 from grape.embedders import WeightedSPINE
 
 
+results_dir = "Results"
+if not os.path.exists(results_dir):
+    os.makedirs(results_dir)
 
+embeddings_dir = "Embeddings"
+if not os.path.exists(embeddings_dir):
+    os.makedirs(embeddings_dir)
 
+clean_embeddings_dir = "Clean_embeddings"
+if not os.path.exists(clean_embeddings_dir):
+    os.makedirs(clean_embeddings_dir)
 
 
 csv_file_path = "string_protein_links.txt"
@@ -73,8 +83,8 @@ embedding_list=[("first_order_line", FirstOrderLINEEnsmallen(embedding_size=500)
                 ("node2vec_cbow", Node2VecCBOWEnsmallen(embedding_size=500)),("node2vec_glove", Node2VecGloVeEnsmallen(embedding_size=500)),
                 ("degree_spine", DegreeSPINE(embedding_size=500)), ("degree_wine", DegreeWINE(embedding_size=500)),
                 ("laplacian_eigenmaps", LaplacianEigenmapsEnsmallen(embedding_size=500)),("hope", HOPEEnsmallen(embedding_size=500)),
-                ("glee", GLEEEnsmallen(embedding_size=500)),("node_label_spine", NodeLabelSPINE(embedding_size=500)),
-                ("node_label_wine", NodeLabelWINE(embedding_size=500)),("rubicone", RUBICONE(embedding_size=500)),
+                ("glee", GLEEEnsmallen(embedding_size=500)),("node_label_spine", NodeLabelSPINE()),
+                ("node_label_wine", NodeLabelWINE()),("rubicone", RUBICONE(embedding_size=500)),
                 ("ruine", RUINE(embedding_size=500)),("score_spine", ScoreSPINE(embedding_size=500)),
                 ("score_wine", ScoreWINE(embedding_size=500)),("siamese", SiameseEnsmallen(embedding_size=500)),
                 ("socio_dim", SocioDimEnsmallen(embedding_size=500)),("structured_embedding", StructuredEmbeddingEnsmallen(embedding_size=500)),
@@ -87,22 +97,27 @@ embedding_list=[("first_order_line", FirstOrderLINEEnsmallen(embedding_size=500)
 
 def make_embedding(embedding_list, graph):
     for emb_name,algorithm in embedding_list:
-        embedding = algorithm.fit_transform(graph)
-        if len(embedding.get_all_node_embedding())==2:
-            results_df=embedding.get_all_node_embedding()[0]
-            results_df.to_csv(f"Embeddings/{emb_name}_embedding.csv")
+        try:
+            embedding = algorithm.fit_transform(graph)
+            if len(embedding.get_all_node_embedding())==2:
+                results_df=embedding.get_all_node_embedding()[0]
+                results_df.to_csv(f"Embeddings/{emb_name}_embedding.csv")
 
-        else:
-            results_df=embedding.get_all_node_embedding()[0] # this is the central tokens, more useful for skipgram
-            results_df.to_csv(f"Embeddings/{emb_name}_embedding.csv")
+            else:
+                results_df=embedding.get_all_node_embedding()[0] # this is the central tokens, more useful for skipgram
+                results_df.to_csv(f"Embeddings/{emb_name}_embedding.csv")
+        except:
+            print(f"Error with {emb_name}")
 
 def clean_embedding(embedding_list):
     for emb_name,algorithm in embedding_list:
-        results_df=pd.read_csv(f"Embeddings/{emb_name}_embedding.csv")
-        converter=pd.read_csv("prot_converter.csv")
-        new_emb = pd.merge(results_df, converter, left_on="Unnamed: 0", right_on='ensb_gene_id',how='inner')
-        new_emb.to_csv(f"Clean_embeddings/{emb_name}_embedding.csv")
-            
+        try:
+            results_df=pd.read_csv(f"Embeddings/{emb_name}_embedding.csv")
+            converter=pd.read_csv("prot_converter.csv")
+            new_emb = pd.merge(results_df, converter, left_on="Unnamed: 0", right_on='ensb_gene_id',how='inner')
+            new_emb.to_csv(f"Clean_embeddings/{emb_name}_embedding.csv")
+        except:
+            print(f"Error with {emb_name}")
 
 make_embedding(embedding_list,string_graph)
 clean_embedding(embedding_list)
