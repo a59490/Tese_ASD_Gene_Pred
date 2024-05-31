@@ -33,7 +33,6 @@ from grape.embedders import RUINE
 from grape.embedders import ScoreSPINE
 from grape.embedders import ScoreWINE
 
-from grape.embedders import SiameseEnsmallen
 from grape.embedders import SocioDimEnsmallen
 from grape.embedders import StructuredEmbeddingEnsmallen
 from grape.embedders import TransEEnsmallen
@@ -86,7 +85,7 @@ embedding_list=[("first_order_line", FirstOrderLINEEnsmallen(embedding_size=500)
                 ("glee", GLEEEnsmallen(embedding_size=500)),("node_label_spine", NodeLabelSPINE()),
                 ("node_label_wine", NodeLabelWINE()),("rubicone", RUBICONE(embedding_size=500)),
                 ("ruine", RUINE(embedding_size=500)),("score_spine", ScoreSPINE(embedding_size=500)),
-                ("score_wine", ScoreWINE(embedding_size=500)),("siamese", SiameseEnsmallen(embedding_size=500)),
+                ("score_wine", ScoreWINE(embedding_size=500)),
                 ("socio_dim", SocioDimEnsmallen(embedding_size=500)),("structured_embedding", StructuredEmbeddingEnsmallen(embedding_size=500)),
                 ("transe", TransEEnsmallen(embedding_size=500)),("unstructured", UnstructuredEnsmallen(embedding_size=500)),
                 ("walklets_cbow", WalkletsCBOWEnsmallen(embedding_size=500)),("walklets_glove", WalkletsGloVeEnsmallen(embedding_size=500)),
