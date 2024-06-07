@@ -163,11 +163,48 @@ if __name__ == "__main__":
                 }
 
                 dataset_list = [(pd.read_csv(path, compression='gzip')[~pd.read_csv(path, compression='gzip')['1'].isin(values_to_remove)], name) for name, path in dataset_paths.items()]
+                
 
-                final_result = model_evaluation(model, param_grid, dataset_list, model_name)
-                create_result_folder(model_name)
-                final_result.to_csv(f"Results/{model_name}/{model_name}_{os.path.basename(path).split('.')[0]}.csv")
+
+                file_path= f"Results/{model_name}/{model_name}_{os.path.basename(path).split('.')[0]}.csv"
+
+                if os.path.isfile(file_path):
+
+                    final_result = model_evaluation(model, param_grid, dataset_list, model_name)
+                    create_result_folder(model_name)
+                    final_result.to_csv(f"Results/{model_name}/{model_name}_{os.path.basename(path).split('.')[0]}.csv")
+
+                else:
+                    pass
 
     elif args.model in model_params:
-        model, param_grid = model_params[args.model]
-        model_evaluation(model, param_grid, dataset_list, args.model)
+        for path in embedding_list:
+                    dataset_creator('sfari_ed_01_16_2024.csv', path, "gene_list_krs_clean.csv")
+                    model_name, (model, param_grid) = model_params[args.model]
+
+                        # Load datasets---------------------------------------------------------------------------------
+
+                    values_to_remove = ['ENSG00000142599', 'ENSG00000135636', 'ENSG00000285508']
+                    dataset_paths = {
+                            'cat_1': 'gene_lists/cat_1.csv.gz',
+                            'cat_1_sd': 'gene_lists/cat_1_sd.csv.gz',
+                            'cat_1_2': 'gene_lists/cat_1_2.csv.gz',
+                            'cat_1_2_sd': 'gene_lists/cat_1_2_sd.csv.gz',
+                            'cat_1_2_3': 'gene_lists/cat_1_2_3.csv.gz',
+                            'complete': 'gene_lists/complete.csv.gz'
+                        }
+
+                    dataset_list = [(pd.read_csv(path, compression='gzip')[~pd.read_csv(path, compression='gzip')['1'].isin(values_to_remove)], name) for name, path in dataset_paths.items()]
+                        
+
+
+                    file_path= f"Results/{model_name}/{model_name}_{os.path.basename(path).split('.')[0]}.csv"
+
+                    if os.path.isfile(file_path):
+
+                        final_result = model_evaluation(model, param_grid, dataset_list, model_name)
+                        create_result_folder(model_name)
+                        final_result.to_csv(f"Results/{model_name}/{model_name}_{os.path.basename(path).split('.')[0]}.csv")
+
+                    else:
+                        pass
