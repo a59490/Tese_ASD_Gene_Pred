@@ -180,7 +180,7 @@ if __name__ == "__main__":
     elif args.model in model_params:
         for path in embedding_list:
                     dataset_creator('sfari_ed_01_16_2024.csv', path, "gene_list_krs_clean.csv")
-                    model_name, (model, param_grid) = model_params[args.model]
+                    model, param_grid = model_params[args.model]
 
                         # Load datasets---------------------------------------------------------------------------------
 
@@ -198,13 +198,13 @@ if __name__ == "__main__":
                         
 
 
-                    file_path= f"Results/{model_name}/{model_name}_{os.path.basename(path).split('.')[0]}.csv"
+                    file_path= f"Results/{args.model}/{args.model}_{os.path.basename(path).split('.')[0]}.csv"
 
                     if os.path.isfile(file_path):
 
-                        final_result = model_evaluation(model, param_grid, dataset_list, model_name)
-                        create_result_folder(model_name)
-                        final_result.to_csv(f"Results/{model_name}/{model_name}_{os.path.basename(path).split('.')[0]}.csv")
+                        final_result = model_evaluation(model, param_grid, dataset_list, args.model)
+                        create_result_folder(args.model)
+                        final_result.to_csv(f"Results/{args.model}/{args.model}_{os.path.basename(path).split('.')[0]}.csv")
 
                     else:
                         pass
