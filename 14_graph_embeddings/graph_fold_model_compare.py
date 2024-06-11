@@ -124,7 +124,7 @@ if __name__ == "__main__":
     # Define models and parameter grids---------------------------------------------------------------
 
     model_params = {
-        'lr': (LogisticRegression(max_iter=2000, class_weight="balanced", n_jobs=10), {'C': [0.001, 0.1, 1, 10, 100, 1000]}),
+        'lr': (LogisticRegression( class_weight="balanced", n_jobs=10), {'C': [0.001, 0.1, 1, 10, 100, 1000],'max_iter': [2000,4000]}),
 
         'svm': (SVC(class_weight="balanced"), {'C': [0.1, 1, 10, 100, 1000], 'gamma': ['scale','auto',1, 0.1, 0.01, 0.001, 0.0001],
                                                'kernel': ['rbf', 'poly', 'sigmoid','sigmoid']}),
