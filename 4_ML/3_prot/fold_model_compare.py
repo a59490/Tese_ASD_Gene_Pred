@@ -17,7 +17,8 @@ from lightgbm import LGBMClassifier
 from xgboost import XGBClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neural_network import MLPClassifier
-
+from scikeras.wrappers import KerasClassifier, KerasRegressor
+import tensorflow as tf
 
 from sklearn.preprocessing import StandardScaler
 
@@ -29,7 +30,19 @@ def remover(x):
     x = x.str.replace('[','')
     x = x.str.replace(']','')
     return x
-
+# Function to create a TensorFlow/Keras neural network model
+def create_tf_model(input_shape):
+    model = tf.keras.Sequential([
+        tf.keras.layers.Dense(250, activation='relu', input_shape=(input_shape,)),
+        tf.keras.layers.Dropout(0.5),
+        tf.keras.layers.Dense(100, activation='relu'),
+        tf.keras.layers.Dropout(0.5),
+        tf.keras.layers.Dense(1, activation='sigmoid')
+    ])
+    model.compile(optimizer='adamW',
+                  loss='binary_crossentropy',
+                  metrics=['accuracy'])
+    return model
 
 # Model hyperparameter tuning-------------------------------------------------------------------
 def model_evaluation(model, param_grid, dataset_list, model_name):
@@ -75,7 +88,13 @@ def model_evaluation(model, param_grid, dataset_list, model_name):
             y_data = dataset_ed["4"].copy().astype('category')
 
             #fit model with best param_grid
-            grid = GridSearchCV(estimator=model, param_grid=param_grid, cv=5, scoring='f1', verbose=1, refit=True)
+            if model_name == 'nn':
+                keras_model =create_tf_model(X_data.shape[1])
+                model = KerasClassifier(build_fn=keras_model, verbose=0)
+
+                grid = GridSearchCV(estimator=model, param_grid=param_grid, cv=3, scoring='f1', verbose=1, refit=True)
+            else:
+                grid = GridSearchCV(estimator=model, param_grid=param_grid, cv=5, scoring='f1', verbose=1, refit=True)
 
             search = grid.fit(X_data, y_data)
 
@@ -161,8 +180,7 @@ if __name__ == "__main__":
                   
         'nb': (GaussianNB(), {}),
 
-        'nn': (MLPClassifier(max_iter=2000), {'hidden_layer_sizes': [(15,10)], 'activation': [ 'tanh', 'relu'],
-                                            'solver':['adam', 'lbfgs']})
+        'nn': (None, {'batch_size': [32,64], 'epochs': [10,20], 'optimizer': ['adam', 'sgd', 'adamW','rmsprop']})
     }
 
     # Model hyperparameter tuning-------------------------------------------------------------------

@@ -16,6 +16,8 @@ from sklearn.neighbors import KNeighborsClassifier
 from lightgbm import LGBMClassifier
 from xgboost import XGBClassifier
 from sklearn.naive_bayes import GaussianNB
+from sklearn.neural_network import MLPClassifier
+
 
 from sklearn.preprocessing import StandardScaler
 
@@ -59,7 +61,6 @@ def model_evaluation(model, param_grid, dataset_list, model_name):
 
             # create X and Y
             X_data = dataset_ed.drop(columns=["y","ensb_gene_id","ensb_prot_id","syb"]).copy()
-            print(f"dataset_ed: {dataset_ed.shape}")
 
 
             X_data = X_data.astype(float)
@@ -110,7 +111,7 @@ def model_evaluation(model, param_grid, dataset_list, model_name):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Model hyperparameter tuning.')
-    parser.add_argument('model', choices=['lr', 'rf', 'svm', 'knn', 'lgbm', 'xgb', 'nb', 'all'],
+    parser.add_argument('model', choices=['lr', 'rf', 'svm', 'knn', 'lgbm', 'xgb', 'nb','nn' , 'all'],
                         help='Model to perform hyperparameter tuning: lr (Logistic Regression), rf (Random Forest), svm (Support Vector Machine), knn (K-Nearest Neighbors), lgbm (LightGBM), xgb (XGBoost), nb (Naive Bayes), all (to run all models)')
     args = parser.parse_args()
 
@@ -142,6 +143,9 @@ if __name__ == "__main__":
         
         'lgbm': (LGBMClassifier(class_weight="balanced", n_jobs=10), {'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.0001, 0.01, 0.05, 0.1, 0.5, 1, 10, 100],
                   'max_depth': [ 3, 5, 10, 20], "reg_alpha": [0, 0.1, 0.5, 1, 2, 5, 10]}),
+
+        'nn': (MLPClassifier(max_iter=2000), {'hidden_layer_sizes': [(15,10,2)], 'activation': ['relu', 'tanh', 'logistic'],
+                                            'solver':['adam', 'lbfgs']})
         
     }
 

@@ -30,7 +30,7 @@ for dataset, name in dataset_list:
     x_data = x_data.astype(float)
     dataset_ed.drop(columns=['embedding'], inplace=True)
     final_dataset = pd.concat([dataset_ed, x_data], axis=1)
-
+    print(final_dataset.shape)
     # export dataset_ed to csv
     final_dataset.to_csv(f"gene_both/{name}.csv.gz", compression='gzip', index=False)
     print(f"Exported {name}.csv.gz")

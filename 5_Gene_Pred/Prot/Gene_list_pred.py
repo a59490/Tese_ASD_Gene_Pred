@@ -10,12 +10,27 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from xgboost import XGBClassifier
+from scikeras.wrappers import KerasClassifier, KerasRegressor
+import tensorflow as tf
 
 
 
 from sklearn.linear_model import LogisticRegressionCV
 
 from sklearn.model_selection import cross_val_predict
+# Function to create a TensorFlow/Keras neural network model
+def create_tf_model(input_shape):
+    model = tf.keras.Sequential([
+        tf.keras.layers.Dense(250, activation='relu', input_shape=(input_shape,)),
+        tf.keras.layers.Dropout(0.5),
+        tf.keras.layers.Dense(100, activation='relu'),
+        tf.keras.layers.Dropout(0.5),
+        tf.keras.layers.Dense(1, activation='sigmoid')
+    ])
+    model.compile(optimizer='adamW',
+                  loss='binary_crossentropy',
+                  metrics=['accuracy'])
+    return model
 
 
 def remover(x):
@@ -83,13 +98,13 @@ for i, (train_index, test_index) in enumerate(skf.split(X_fold, y_fold)):
 
 
     # model ----------------------
-    model=XGBClassifier(class_weight="balanced", n_jobs=10)
+    keras_model =create_tf_model(X_data.shape[1])
+    model = KerasClassifier(build_fn=keras_model, verbose=0)
 
     # Params ----------------------
-    params={'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.0001, 0.01, 0.05, 0.1, 0.5, 1, 10, 100],
-                  'max_depth': [-1, 3, 5, 10, 20, 30], "booster": ['gbtree', 'gblinear', 'dart']}
+    params={'batch_size': [32,64], 'epochs': [10,20], 'optimizer': ['adam', 'sgd', 'adamW','rmsprop']}
 
-    grid_model= GridSearchCV(estimator=model, param_grid=params, cv=5, scoring='f1', verbose=1, refit=True)
+    grid_model= GridSearchCV(estimator=model, param_grid=params, cv=3, scoring='f1', verbose=1, refit=True)
 
     grid_model.fit(X_data, y_data)
 
@@ -107,13 +122,14 @@ cat_1_x = cat_1_x.str.split(expand=True,pat=',').apply(remover).astype(float)
 cat_1_y = cat_1_sd["4"].copy().astype('category')
 
 # model ----------------------
-model=XGBClassifier(class_weight="balanced", n_jobs=10)
+keras_model =create_tf_model(X_data.shape[1])
+model = KerasClassifier(build_fn=keras_model, verbose=0)
 
 # Params ----------------------
-params={'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.0001, 0.01, 0.05, 0.1, 0.5, 1, 10, 100],
-                  'max_depth': [-1, 3, 5, 10, 20, 30], "booster": ['gbtree', 'gblinear', 'dart']}
+params={'batch_size': [32,64], 'epochs': [10,20], 'optimizer': ['adam', 'sgd', 'adamW','rmsprop']}
 
-grid_model= GridSearchCV(estimator=model, param_grid=params, cv=5, scoring='f1', verbose=1, refit=True)
+
+grid_model= GridSearchCV(estimator=model, param_grid=params, cv=3, scoring='f1', verbose=1, refit=True)
 search=grid_model.fit(cat_1_x, cat_1_y)
 
 predictions_all = search.predict_proba(all_genes)
@@ -143,10 +159,10 @@ concat_df = concat_df.sort_values(by='Probability_Class_1', ascending=False)
 
 
 # Save the result
-concat_df.to_csv("Results/xgb.csv", index=False)
+concat_df.to_csv("Results/keras.csv", index=False)
 
 # Clean the data
 from Csv_clean import *
 
-main("Results/test.csv")
+main("Results/keras.csv")
 
