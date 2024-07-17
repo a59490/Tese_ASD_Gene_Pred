@@ -127,7 +127,7 @@ if __name__ == "__main__":
         'lr': (LogisticRegression( class_weight="balanced", n_jobs=10), {'C': [0.001, 0.1, 1, 10, 100, 1000],'max_iter': [2000,4000], 'penalty': ['l1', 'l2']}),
 
         'svm': (SVC(class_weight="balanced"), {'C': [0.1, 1, 10, 100, 1000], 'gamma': ['scale','auto',1, 0.1, 0.01, 0.001, 0.0001],
-                                               'kernel': ['rbf', 'poly', 'sigmoid','sigmoid']}),
+                                               'kernel': ['rbf', 'poly','sigmoid']}),
                                                
         'lgbm': (LGBMClassifier(class_weight="balanced", n_jobs=10), {'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.0001, 0.01, 0.05, 0.1, 0.5, 1, 10, 100],
                   'max_depth': [2, 3, 5, 10, 20, 30], "reg_alpha": [0, 0.1, 0.5, 1, 2, 5, 10]})
@@ -203,3 +203,4 @@ if __name__ == "__main__":
                     final_result = model_evaluation(model, param_grid, dataset_list, args.model)
                     create_result_folder(args.model)
                     final_result.to_csv(f"Results/{args.model}/{args.model}_{os.path.basename(path).split('.')[0]}.csv")
+                    del dataset_list
