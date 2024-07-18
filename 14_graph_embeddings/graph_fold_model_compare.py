@@ -63,7 +63,7 @@ def model_evaluation(model, param_grid, dataset_list, model_name):
             # create X and Y
             X_data = dataset_ed.drop(columns=["y","ensb_gene_id","ensb_prot_id","syb"]).copy()
             X_data= X_data.iloc[:,:10]
-            print(f"dataset_ed: {dataset_ed.shape}")
+            print(f"dataset_ed: {X_data.shape}")
 
 
             X_data = X_data.astype(float)
