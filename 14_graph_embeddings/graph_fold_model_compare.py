@@ -36,6 +36,7 @@ def model_evaluation(model, param_grid, dataset_list, model_name):
     cat_1=dataset_list[0][0]
     
     X_fold=cat_1.drop(columns=["y","ensb_gene_id","ensb_prot_id","syb"]).copy()
+    X_fold= X_fold.iloc[:,:10]
 
     y_fold=cat_1["y"].copy()
 
@@ -61,6 +62,7 @@ def model_evaluation(model, param_grid, dataset_list, model_name):
 
             # create X and Y
             X_data = dataset_ed.drop(columns=["y","ensb_gene_id","ensb_prot_id","syb"]).copy()
+            X_data= X_data.iloc[:,:10]
             print(f"dataset_ed: {dataset_ed.shape}")
 
 
@@ -77,6 +79,7 @@ def model_evaluation(model, param_grid, dataset_list, model_name):
 
             #edit test data
             test_data_x= test_dataset.drop(columns=["y","ensb_gene_id","ensb_prot_id","syb"]).copy()
+            test_data_x= test_data_x.iloc[:,:10]
             test_data_x = test_data_x.astype(float)
 
             test_data_y = test_dataset["y"].copy().astype('category')
@@ -126,8 +129,8 @@ if __name__ == "__main__":
     model_params = {
         'lr': (LogisticRegression( class_weight="balanced", n_jobs=10), {'C': [0.001, 0.1, 1, 10, 100, 1000],'max_iter': [2000,4000], 'penalty': ['l1', 'l2']}),
 
-        'svm': (SVC(class_weight="balanced"), {'C': [0.1, 1, 10, 100, 1000], 'gamma': ['scale','auto',1, 0.1, 0.01, 0.001, 0.0001],
-                                               'kernel': ['rbf', 'poly','sigmoid']}),
+        'svm': (SVC(class_weight="balanced"), {'C': [0.1, 1, 10, 100, 1000],
+                                               'kernel': ['rbf']}),
                                                
         'lgbm': (LGBMClassifier(class_weight="balanced", n_jobs=10), {'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.0001, 0.01, 0.05, 0.1, 0.5, 1, 10, 100],
                   'max_depth': [2, 3, 5, 10, 20, 30], "reg_alpha": [0, 0.1, 0.5, 1, 2, 5, 10]})
@@ -149,6 +152,7 @@ if __name__ == "__main__":
         for path in embedding_list:
             dataset_creator('sfari_ed_01_16_2024.csv', path, "gene_list_krs_clean.csv")
             for model_name, (model, param_grid) in model_params.items():
+                print(f"Model: {model_name}, emb {path}")
 
                 # Load datasets---------------------------------------------------------------------------------
 
@@ -176,9 +180,11 @@ if __name__ == "__main__":
                     final_result = model_evaluation(model, param_grid, dataset_list, model_name)
                     create_result_folder(model_name)
                     final_result.to_csv(f"Results/{model_name}/{model_name}_{os.path.basename(path).split('.')[0]}.csv")
+                    del dataset_list
 
     elif args.model in model_params:
         for path in embedding_list:
+                    print(f" emb {path}")
                     dataset_creator('sfari_ed_01_16_2024.csv', path, "gene_list_krs_clean.csv")
                     model, param_grid = model_params[args.model]
 
