@@ -25,5 +25,5 @@ export OMP_NUM_THREADS=16
 
 # run the application
 echo "Now on: $PWD"
-$HOME/miniconda3/bin/conda run -n sklearn-env python /work/joaoinacio/work/Tese_ASD_Gene_Pred/14_graph_embeddings/graph_fold_model_compare.py all
+$HOME/miniforge3/bin/conda run -n env python /work/joaoinacio/work/Tese_ASD_Gene_Pred/14_graph_embeddings/graph_fold_model_compare.py lgbm
 echo "Finished"

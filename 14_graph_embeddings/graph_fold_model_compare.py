@@ -21,6 +21,12 @@ from sklearn.preprocessing import StandardScaler
 
 from gene_lists.dataset_creator_embs import dataset_creator
 
+from sklearnex import patch_sklearn 
+patch_sklearn()
+ 
+import warnings 
+warnings.filterwarnings("ignore",
+category=FutureWarning)  
 # Model hyperparameter tuning-------------------------------------------------------------------
 def model_evaluation(model, param_grid, dataset_list, model_name):
     
@@ -36,7 +42,7 @@ def model_evaluation(model, param_grid, dataset_list, model_name):
     cat_1=dataset_list[0][0]
     
     X_fold=cat_1.drop(columns=["y","ensb_gene_id","ensb_prot_id","syb"]).copy()
-    X_fold= X_fold.iloc[:,:10]
+    #X_fold= X_fold.iloc[:,:10]
 
     y_fold=cat_1["y"].copy()
 
@@ -62,7 +68,7 @@ def model_evaluation(model, param_grid, dataset_list, model_name):
 
             # create X and Y
             X_data = dataset_ed.drop(columns=["y","ensb_gene_id","ensb_prot_id","syb"]).copy()
-            X_data= X_data.iloc[:,:10]
+            #X_data= X_data.iloc[:,:10]
             print(f"dataset_ed: {X_data.shape}")
 
 
@@ -79,7 +85,7 @@ def model_evaluation(model, param_grid, dataset_list, model_name):
 
             #edit test data
             test_data_x= test_dataset.drop(columns=["y","ensb_gene_id","ensb_prot_id","syb"]).copy()
-            test_data_x= test_data_x.iloc[:,:10]
+            #test_data_x= test_data_x.iloc[:,:10]
             test_data_x = test_data_x.astype(float)
 
             test_data_y = test_dataset["y"].copy().astype('category')
@@ -127,12 +133,12 @@ if __name__ == "__main__":
     # Define models and parameter grids---------------------------------------------------------------
 
     model_params = {
-        'lr': (LogisticRegression( class_weight="balanced", n_jobs=10), {'C': [0.001, 0.1, 1, 10, 100, 1000],'max_iter': [2000,4000], 'penalty': ['l1', 'l2']}),
+        'lr': (LogisticRegression( class_weight="balanced"), {'C': [0.001, 0.1, 1, 10, 100, 1000],'max_iter': [2000,4000]}),
 
-        'svm': (SVC(class_weight="balanced"), {'C': [0.1, 1, 10, 100, 1000],
-                                               'kernel': ['rbf']}),
+        'svm': (SVC(class_weight="balanced", max_iter=4000), {'C': [0.1, 1, 10, 100, 1000], 'gamma': ['scale','auto',1, 0.1, 0.01, 0.001, 0.0001],
+              'degree': [3, 4, 5, 6, 7, 8, 9, 10],'kernel': ['rbf', 'poly', 'sigmoid','sigmoid']}),
                                                
-        'lgbm': (LGBMClassifier(class_weight="balanced", n_jobs=10), {'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.0001, 0.01, 0.05, 0.1, 0.5, 1, 10, 100],
+        'lgbm': (LGBMClassifier(class_weight="balanced", n_jobs=10,verbose=-1), {'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.0001, 0.01, 0.05, 0.1, 0.5, 1, 10, 100],
                   'max_depth': [2, 3, 5, 10, 20, 30], "reg_alpha": [0, 0.1, 0.5, 1, 2, 5, 10]})
 
     }
@@ -206,7 +212,14 @@ if __name__ == "__main__":
 
                     file_path= f"Results/{args.model}/{args.model}_{os.path.basename(path).split('.')[0]}.csv"
 
-                    final_result = model_evaluation(model, param_grid, dataset_list, args.model)
-                    create_result_folder(args.model)
-                    final_result.to_csv(f"Results/{args.model}/{args.model}_{os.path.basename(path).split('.')[0]}.csv")
-                    del dataset_list
+                    if os.path.isfile(file_path):
+                    	pass
+
+
+                    else:
+                        
+                    	final_result = model_evaluation(model, param_grid, dataset_list, args.model)
+                    	create_result_folder(args.model)
+                    	final_result.to_csv(f"Results/{args.model}/{args.model}_{os.path.basename(path).split('.')[0]}.csv")
+                    	del dataset_list
+ 
