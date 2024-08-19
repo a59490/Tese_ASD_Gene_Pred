@@ -217,7 +217,7 @@ if __name__ == "__main__":
 
 
                     else:
-                        print(f'Running {dataset_list[0].size} embedding')
+                        print(f'Running {dataset_list[0][0]} embedding')
                     	#final_result = model_evaluation(model, param_grid, dataset_list, args.model)
                     	#create_result_folder(args.model)
                     	#final_result.to_csv(f"Results/{args.model}/{args.model}_{os.path.basename(path).split('.')[0]}.csv")
