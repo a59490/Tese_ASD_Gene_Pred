@@ -139,7 +139,10 @@ if __name__ == "__main__":
               'degree': [3, 4, 5, 6, 7, 8, 9, 10],'kernel': ['rbf', 'poly', 'sigmoid','sigmoid']}),
                                                
         'lgbm': (LGBMClassifier(class_weight="balanced", n_jobs=10,verbose=-1), {'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.0001, 0.01, 0.05, 0.1, 0.5, 1, 10, 100],
-                  'max_depth': [2, 3, 5, 10, 20, 30], "reg_alpha": [0, 0.1, 0.5, 1, 2, 5, 10]})
+                  'max_depth': [2, 3, 5, 10, 20, 30], "reg_alpha": [0, 0.1, 0.5, 1, 2, 5, 10]}),
+                  
+        'knn': (KNeighborsClassifier(n_jobs=10), {'n_neighbors': [ 2, 3, 5, 7, 9, 11], 'weights': ['uniform', 'distance'], 'algorithm': ['auto', 'ball_tree', 'kd_tree'],
+                  'metric': ['euclidean', 'manhattan', 'minkowski']})
 
     }
 
