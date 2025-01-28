@@ -10,33 +10,17 @@ This repository contains code and instructions for reproducing the analysis cond
 4. [Machine Learning Models](#machine-learning-models)  
 5. [Validation and Results](#validation-and-results)  
 
----
-
-## Repository Structure
-
-The repository is organized into the following directories:
-
-
-01_Data_preparation/    # Scripts for dataset preprocessing
-02_Embedding_creation/  # Scripts for graph and sequence embedding generation
-03_ML/                  # Scripts for training machine learning models
-04_Validation/          # Scripts for model evaluation
-05_Results/             # Saved results and performance metrics
-README.md               # Project documentation
-
-
----
 
 ## Dataset Preparation
 
-The dataset used in this project includes:  
+The Data Preparation stage consists in the extraction of the postive and negative gene datasets
 
-- Protein-protein interaction graphs.  
-- DNA and protein sequences (~30,000 rows).  
 
-### Steps:
-1. Download the biological datasets:
-2. Format the datasets:
+#### Postive genes:
+SFARI gene dataset 
+
+#### Negative genes:
+Updated list from the Krishnan et al. [article](https://www.nature.com/articles/nn.4353)
 
 
 ---

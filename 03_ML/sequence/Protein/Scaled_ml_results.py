@@ -166,7 +166,6 @@ if __name__ == "__main__":
         'xgb': (XGBClassifier(class_weight="balanced", n_jobs=10), {'n_estimators': [100, 200, 300, 1000], 'learning_rate': [0.0001, 0.01, 0.05, 0.1, 0.5, 1, 10, 100],
                   'max_depth': [-1, 3, 5, 10, 20, 30], "booster": ['gbtree', 'gblinear', 'dart']}),
                   
-        'nb': (GaussianNB(), {})
     }
 
     # Model hyperparameter tuning-------------------------------------------------------------------
