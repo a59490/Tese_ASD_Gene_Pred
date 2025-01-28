@@ -1,6 +1,7 @@
 # Autism Risk Gene Prediction Using Graph and Sequence Embeddings
 
 This repository contains code and instructions for reproducing the analysis conducted in the MSc thesis, *"Predicting Autism Risk Genes Using Graph and Sequence Embeddings"*. The study utilized biological datasets, protein-protein interaction graphs, and DNA/protein sequences to develop machine learning models for identifying Autism risk genes.
+Three embedding aproaches were used, using DNA sequences [DNABERT-2](https://github.com/MAGICS-LAB/DNABERT_2/tree/main), Protein sequences [ProtT5](https://github.com/agemagician/ProtTrans) and Graphs [GRAPE](https://github.com/AnacletoLAB/grape)
 
 ## Table of Contents
 
@@ -17,7 +18,7 @@ The Data Preparation stage consists in the extraction of the postive and negativ
 
 
 #### Postive genes:
-SFARI gene dataset 
+[SFARI](https://gene.sfari.org/database/human-gene/) gene dataset version 01/16/2024 
 
 #### Negative genes:
 Updated list from the Krishnan et al. [article](https://www.nature.com/articles/nn.4353)
@@ -27,11 +28,22 @@ Updated list from the Krishnan et al. [article](https://www.nature.com/articles/
 
 ## Graph and Sequence Embedding Generation
 
-The embeddings were created using third-party tools and custom scripts:  
+Two diferent embedding aproaches are presented. 
 
-1. **Graph Embeddings**:
+### Graph Embeddings:
+In order to create the Graph embeddings you will need:
 
-2. **Sequence Embeddings**:
+- *STRINGdb PiP graph*
+- *Sfari gene dataset*
+- *Positive and negative gene list*
+
+To create the embeddings run the script:
+
+    # Create_embs.py
+
+This scrip will try to create an embedding for each of the available embedding algoriths available in the [GRAPE](https://github.com/AnacletoLAB/grape) library
+
+### Sequence Embeddings:
 
 
 

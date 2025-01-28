@@ -67,7 +67,7 @@ string_graph = Graph.from_csv(
     edge_list_separator=separator,
     sources_column_number=0,  # protein 1 is in the first column
     destinations_column_number=1,  # Aprotein 2 is in the second column
-    weights_column_number=2,  # Assuming weight is in the third column ------------- /1000 check later!!!!!!!!
+    weights_column_number=2,  # Assuming weight is in the third column ------------- 
     directed=False,  #  graph is undirected, adjust if necessary
     verbose=True  # Optionally, set verbose to True for more information during loading
 )
