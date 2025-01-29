@@ -1,68 +1,157 @@
 # Autism Risk Gene Prediction Using Graph and Sequence Embeddings
 
-This repository contains code and instructions for reproducing the analysis conducted in the MSc thesis, *"Predicting Autism Risk Genes Using Graph and Sequence Embeddings"*. The study utilized biological datasets, protein-protein interaction graphs, and DNA/protein sequences to develop machine learning models for identifying Autism risk genes.
-Three embedding aproaches were used, using DNA sequences [DNABERT-2](https://github.com/MAGICS-LAB/DNABERT_2/tree/main), Protein sequences [ProtT5](https://github.com/agemagician/ProtTrans) and Graphs [GRAPE](https://github.com/AnacletoLAB/grape)
+This repository contains code and instructions for reproducing the analysis conducted in the MSc thesis, *"Predicting Autism Risk Genes Using Graph and Sequence Embeddings"*. The study utilized biological datasets, protein-protein interaction (PPI) graphs, and DNA/protein sequences to develop machine learning models for identifying Autism risk genes. Three embedding approaches were used:
+
+- **DNA sequences** ([DNABERT-2](https://github.com/MAGICS-LAB/DNABERT_2/tree/main))
+- **Protein sequences** ([ProtT5](https://github.com/agemagician/ProtTrans))
+- **Graphs** ([GRAPE](https://github.com/AnacletoLAB/grape))
+
+---
 
 ## Table of Contents
 
-1. [Repository Structure](#repository-structure) 
-2. [Data Preparation](#data-preparation)  
+1. [Repository Structure](#repository-structure)  
+2. [Dataset Preparation](#dataset-preparation)  
 3. [Embedding Creation](#embedding-creation)  
+   - [Graph Embeddings](#a-graph-embeddings)  
+   - [Sequence Embeddings](#b-sequence-embeddings)  
 4. [Machine Learning Models](#machine-learning-models)  
 5. [Validation and Results](#validation-and-results)  
 
+---
+
+## Repository Structure
+
+The repository is organized as follows:
+
+```
+.
+|-- 01_Dataset_preparation/          # Scripts and files for dataset extraction and preparation
+|-- 02_Embedding_creation/           # Scripts for generating graph and sequence embeddings
+|-- 03_ML/                           # Machine learning scripts for training and evaluation
+|-- Clean_embeddings/                # Folder containing processed embedding files
+|-- gene_lists/                      # Folder containing positive and negative gene datasets
+|-- Results/                         # Output directory for trained models and evaluation metrics
+|-- fold_model_compare.py            # Main script for model training and evaluation
+```
+
+---
 
 ## Dataset Preparation
 
-The Data Preparation stage consists in the extraction of the postive and negative gene datasets
+The **Data Preparation** stage consists of extracting positive and negative gene datasets.
 
+### Positive Genes:
+- **Source:** [SFARI Gene Database](https://gene.sfari.org/database/human-gene/) (Version: 01/16/2024)
 
-#### Postive genes:
-[SFARI](https://gene.sfari.org/database/human-gene/) gene dataset version 01/16/2024 
-
-#### Negative genes:
-Updated list from the Krishnan et al. [article](https://www.nature.com/articles/nn.4353)
-
+### Negative Genes:
+- **Source:** Updated list from the Krishnan et al. [article](https://www.nature.com/articles/nn.4353)
 
 ---
 
-## Graph and Sequence Embedding Generation
+## Embedding Creation
 
-Two diferent embedding aproaches are presented. 
+This project employs two different embedding approaches: **Graph Embeddings** and **Sequence Embeddings**.
 
-### Graph Embeddings:
-In order to create the Graph embeddings you will need:
+### A) Graph Embeddings
 
-- *STRINGdb PiP graph*
-- *Sfari gene dataset*
-- *Positive and negative gene list*
+Graph embeddings are generated using the following resources:
+- **STRINGdb PPI Graph**
+- **SFARI Gene Dataset**
+- **Positive and Negative Gene Lists**
 
-To create the embeddings run the script:
+#### Steps:
 
-    # Create_embs.py
+1. Navigate to the `02_Embedding_creation/graph/` folder.
+2. Run the script to create embeddings using all available algorithms in the [GRAPE](https://github.com/AnacletoLAB/grape) library:
 
-This scrip will try to create an embedding for each of the available embedding algoriths available in the [GRAPE](https://github.com/AnacletoLAB/grape) library
+   ```bash
+   python3 Create_embs.py
+   ```
 
-### Sequence Embeddings:
+### B) Sequence Embeddings
 
+#### DNA Embeddings:
 
+To generate DNA sequence embeddings:
+
+1. Download the **cDNA FASTA files** from the [Ensembl FTP](https://www.ensembl.org/info/data/ftp/index.html).
+2. Create the necessary dataset by running the `dna_seq_maker` script from the `02_Embedding_creation` folder.
+3. Follow the [DNABERT-2](https://github.com/MAGICS-LAB/DNABERT_2/tree/main) setup guide to create the environment.
+4. Navigate to `02_Embedding_creation/dnaBERT/` and run:
+
+   ```bash
+   python3 dna_embeddings.py
+   ```
+
+#### Protein Embeddings:
+
+To generate protein sequence embeddings:
+
+1. Download the **protein FASTA files** from the [Ensembl FTP](https://www.ensembl.org/info/data/ftp/index.html).
+2. Create the necessary dataset by running the `prot_seq_maker` script from the `02_Embedding_creation` folder.
+3. Follow the [ProtT5](https://github.com/agemagician/ProtTrans) setup guide to create the environment.
+4. Navigate to `02_Embedding_creation/prott5/` and run:
+
+   ```bash
+   python3 prot_emb.py
+   ```
 
 ---
 
-## Model Training and Evaluation
+## Machine Learning Models
 
-Six machine learning models were trained and evaluated:
+The `fold_model_compare.py` script is used for:
+- Hyperparameter tuning
+- Training multiple machine learning models
+- Evaluating performance on dataset permutations (depending on SFARI categories used)
 
-- Logistic Regression, SVM, Random Forest, XGBoost, LightGBM, and KNN.  
+#### Supported Models:
+- Logistic Regression
+- Support Vector Machines (SVM)
+- Random Forest
+- XGBoost
+- LightGBM
+- k-Nearest Neighbors (KNN)
 
-### Steps:
-1. **Prepare Train, Validation, and Test Sets**:
+### Running the Script:
 
-2. **Train Models**:
+- To train and evaluate **all models**:
 
-3. **Evaluate Models**:
+   ```bash
+   python3 fold_model_compare.py all
+   ```
 
+- To train and evaluate a **specific model** (e.g., Random Forest):
+
+   ```bash
+   python3 fold_model_compare.py rf
+   ```
+
+### Outputs:
+- Results are saved in `Results/{model_name}/`.
+- Metrics include AUC, accuracy, F1-score, sensitivity, specificity, MCC, and more.
 
 ---
 
-## Results Validation
+## Validation and Results
+
+### Ranked List
+
+- Generate a ranked list of all available genes using the trained model.
+- Apply the ranked list to evaluate gene relevance.
+
+### Enrichment Analysis
+
+- Divide the ranked list into deciles.
+- Compare each decile with ASD phenotypes and other gene association studies.
+
+### Network Analysis
+
+- Create a PPI graph of the top-ranked decile.
+- Perform decile-specific enrichment analysis.
+
+---
+
+This repository provides all the necessary tools for generating embeddings, training models, and performing enrichment analyses. For further questions or issues, feel free to contact the repository maintainers.
+
