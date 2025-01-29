@@ -10,32 +10,15 @@ This repository contains code and instructions for reproducing the analysis cond
 
 ## Table of Contents
 
-1. [Repository Structure](#repository-structure)  
-2. [Dataset Preparation](#dataset-preparation)  
-3. [Embedding Creation](#embedding-creation)  
+1. [Dataset Preparation](#dataset-preparation)  
+2. [Embedding Creation](#embedding-creation)  
    - [Graph Embeddings](#a-graph-embeddings)  
    - [Sequence Embeddings](#b-sequence-embeddings)  
-4. [Machine Learning Models](#machine-learning-models)  
-5. [Validation and Results](#validation-and-results)  
+3. [Machine Learning Models](#machine-learning-models)  
+4. [Validation and Results](#validation-and-results)  
 
 ---
 
-## Repository Structure
-
-The repository is organized as follows:
-
-```
-.
-|-- 01_Dataset_preparation/          # Scripts and files for dataset extraction and preparation
-|-- 02_Embedding_creation/           # Scripts for generating graph and sequence embeddings
-|-- 03_ML/                           # Machine learning scripts for training and evaluation
-|-- Clean_embeddings/                # Folder containing processed embedding files
-|-- gene_lists/                      # Folder containing positive and negative gene datasets
-|-- Results/                         # Output directory for trained models and evaluation metrics
-|-- fold_model_compare.py            # Main script for model training and evaluation
-```
-
----
 
 ## Dataset Preparation
 
