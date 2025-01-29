@@ -136,5 +136,3 @@ The `fold_model_compare.py` script is used for:
 
 ---
 
-This repository provides all the necessary tools for generating embeddings, training models, and performing enrichment analyses. For further questions or issues, feel free to contact the repository maintainers.
-
